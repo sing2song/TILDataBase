@@ -114,9 +114,49 @@ NoSQL : SQL을 사용하지 않고 DB를 다룰 수 있는 것.
 
 
 
-8. 환경변수에 등록하자!(편집)
+8. 어디서든 사용할 수 있게 환경변수에 등록하자!(편집)
 
-   Path에 위 경로를 등록! 난 설치후에 자동으로 환경변수에 등록됐었다!
+   Path에 위 경로를 등록! 
 
-![image-20210219102900666](md-images/image-20210219102900666.png)
+![image-20210219103453780](md-images/image-20210219103453780.png)
+
+
+
+9. cmd창에서 확인!
+
+![image-20210219103526900](md-images/image-20210219103526900.png)
+
+잘 돌아가면 mysql> 로 출력된다!
+
+```bash
+# -u(계정)을 root로 -p(패스워드)
+mysql -u root -p
+password : ssong
+```
+
+
+
+10. test
+
+![image-20210219104251669](md-images/image-20210219104251669.png)
+
+
+
+## MySQL 사용
+
+예제 테이블을 추가
+
+```mysql
+
+mysql> create database sampleDB;
+mysql> use sampleDB;
+
+mysql>show tables; -sample
+```
+
+
+
+`mysql.txt`에 있는 sql문들을 집어넣는다
+
+
 
