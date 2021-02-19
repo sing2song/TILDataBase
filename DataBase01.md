@@ -244,7 +244,170 @@ from emp;
 
 
 
+Quiz
+
+1. emp테이블에서 이름이(ename) smith인 사람의 모든 정보를 출력!
+
+   ```mysql
+   select * from emp where ename='smith';
+   ```
+
+2. emp테이블에서 급여가 1000과 2000사이인 회원의 이름과 급여를 출력!
+
+```mysql
+select ename, sal from emp where sal>=1000 and sal<=2000;
+select ename, sal from emp where sal between 1000 and 2000;
+```
 
 
 
+3. emp테이블에서 입사일(hiredate)이 1981년 이전에 입사한 직원의 이름과 입사일을 출력
 
+   ```mysql
+   select ename, hiredate 
+   from emp 
+   where date(hiredate)<=date('1981-01-01');
+   
+   select ename, hiredate 
+   from emp 
+   where year(hiredate)<1981;
+   ```
+
+   
+
+## 비교연산자
+
+### IN
+
+나열된 것 중에서 하나만 만족해도 참! or의 개념
+
+dept_emp테이블에서 부서 번호가 d005나 d009에 속한의 사번, 부서번호 출력
+
+```mysql
+select emp_no,dept_no
+from dept_emp
+where dept_no in ('d005','d009');
+```
+
+
+
+### LIKE
+
+와일드 카드를 사용하여 특정 문자를 포함한 값에 대한 조건을 처리.
+
+1. Emp테이블에서 이름이 **s로 시작되는** 직원들의 ename과 job을 출력
+
+```mysql
+select ename, job
+from emp
+where ename like 's%';
+```
+
+
+
+2. Emp테이블에서 이름의 **두번째 문자**가 L인 직원들의 ename과 job출력
+
+```mysql
+select ename, job
+from emp
+where ename like '_L%';
+```
+
+
+
+### order by절
+
+select 칼럼명 from 테이블명 order by 칼럼이나 표현식(asc또는 desc);
+
+1. Emp테이블에서 이름을 오름차순, 연봉은 내림차순, 연봉이 높은 사람부터 출력
+
+```mysql
+select ename, sal
+from emp
+order by ename asc, sal desc;
+```
+
+
+
+### Group by 절, having 절
+
+select 출력할 결과물...(컬럼의 이름)
+
+from 대상 테이블명
+
+where 조건절, 필터링, 원하는 로우 데이터만 요청
+
+group by 그룹을 구성할 컬럼 이름
+
+having 그룹을 기반으로한 필터링
+
+order by 정렬기본 asc/desc
+
+
+
+> 그룹함수(집계함수) ↔ group by 절, having절
+
+하나의 row값을 반환. 그룹별 하나의 row값 반환
+
+ex) 그룹 안에서(group by) 80점 이상인것들(having)
+
+having은 groupby에 종속적, 조건을 주는 것이다.
+
+
+
+집계(그룹)함수의 출력함수는 무조건 1개가 나오게 된다. 
+
+이를 방지하기 위해 group by를 이용한다.
+
+
+
+select절에 집계함수와 컬럼을 같이 출력할 수 없다.
+
+select empno, AVG(sal) from emp group by empno;
+
+**But,** group by 절에서 사용한 컬럼은 당연히 select절에 사용되게 된다.
+
+group by에 대한 조건은 having을 사용한다.
+
+> Error
+
+```mysql
+SELECT empno, AVG(sal)
+ FROM emp
+ WHERE AVG(salary) > 50000
+GROUP BY empno
+```
+
+> correct
+
+```mysql
+SELECT empno, AVG(sal)
+ FROM emp
+ GROUP BY empno
+ having AVG(sal) > 50000
+
+```
+
+
+
+## Join
+
+하나이상의 테이블로부터 연관된 데이터를 검색해 오는 방법
+
+primary Key와 Foreign Key값의 연관에 의해 JOIN이 성립
+
+
+
+카타시안 프로덕트(곱) : join조건이 없을 때
+
+시각적으로 join 문장인지 확인할 수 있는 방법. (from 절에 테이블이 2개 이상)
+
+```mysql
+select * from emp,dept;
+컬럼의 개수 : 8 + 3 =11개
+로우 데이터의 개수 : 14 * 4 = 56개
+```
+
+
+
+Join을 할 떄는 기준 테이블이 있다. 정상적인 Join을 수행하면 기준 테이블의 로우 데이터 개수의 크기로 반환!
