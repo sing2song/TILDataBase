@@ -144,19 +144,107 @@ password : ssong
 
 ## MySQL 사용
 
-예제 테이블을 추가
+> 예제 테이블을 추가
 
 ```mysql
-
 mysql> create database sampleDB;
 mysql> use sampleDB;
 
 mysql>show tables; -sample
 ```
 
-
-
 `mysql.txt`에 있는 sql문들을 집어넣는다
+
+해당 파일은 C:\Users\32153256\Desktop\ssong\soltlux\TILDataBase 폴더 안에 저장해둠!
+
+
+
+```mysql
+select * from salgrade;	--5줄
+select * from emp;	--4줄
+select * from dept; --14줄
+
+show tables;
+3개의 테이블이 나와야한다!
+```
+
+
+
+## 실습
+
+1. dept테이블의 모든정보를 출력
+
+   select * from dept;
+
+2. dept테이블에서 dname과 loc의 정보만 출력
+
+   select dname,loc from dept;
+
+3. Emp 테이블의 스키마 정보(어떤 컬럼들을 갖고있는지)를 알고 싶다.
+
+   `스키마` : 어디에 사용되냐에 따라 개념이 조금씩 달라지는데 위에선 어떤 구조를 가지고있는지 확인하고 싶은 것이다.
+
+   desc emp;
+
+
+
+varchar는 가변데이터
+
+char는 고정값
+
+
+
+### Select 구문의 기본문형
+
+> 구조
+
+```mysql
+select 출력할 결과물..컬럼의 이름
+from 대상 테이블명
+where 조건절, 필터링, 원하는 로우 데이터만 요청
+```
+
+
+
+`DISTINCT` 중복행을 제거
+
+`ALIAS` 나타날 컬럼에 대한 다른 이름을 부여 =>as
+
+`from` 선택한 컬럼이 있는 테이블을 명시시킨다.
+
+```mysql
+select job from emp; 
+select distinct job from emp; 
+select distinct job as 업무 from emp; 
+select distinct job 업무 from emp; 
+
+select distinct job 업 무 from emp; #error
+```
+
+공백에 의미가 크다! '무'에 대한 처리가 되지 않으므로 에러가 난다.
+
+공백을 넣고 싶을 때 ' '(작은 따옴표)를 사용하면 된다. 
+
+" "(큰따옴표)도 사용가능하다.
+
+```mysql
+select distinct job '업 무' from emp;
+select distinct job "업 무" from emp;
+```
+
+
+
+> 문자열 결합함수 `concat`
+
+```mysql
+select concat(ename,' ',sal)
+as '이름과 급여'
+from emp;
+```
+
+
+
+
 
 
 
