@@ -411,3 +411,107 @@ select * from emp,dept;
 
 
 Join을 할 떄는 기준 테이블이 있다. 정상적인 Join을 수행하면 기준 테이블의 로우 데이터 개수의 크기로 반환!
+
+```mysql
+select e.ename, d.dname, d.loc 
+from emp e,dept d
+where e.deptno=d.deptno and e.ename='smith';
+```
+
+
+
+> Quiz 
+
+smith의 sal은 80이고 grade는 1이다.를 select 문으로 출력하기.
+
+```mysql
+select e.ename, e.sal, s.grade 
+from emp e, salgrade s
+where e.sal between s.losal and s.hisal 
+	  and e.ename='smith';
+```
+
+
+
+smith의 부장의 이름을 알고싶다
+
+```mysql
+select e.ename, e2.ename 
+from emp e, emp e2 
+where e.mgr=e2.empno and e.ename='smith';
+```
+
+
+
+모든 사원의 부장의 이름을 출력하고 싶다.
+
+(King은 mgr이 null이라서 출력되지 않는다!)
+
+```mysql
+select e.ename, e2.ename 
+from emp e, emp e2 
+where e.mgr=e2.empno;
+```
+
+
+
+Catersian join
+
+조인에 대한 조건이 생략되기에 모든 행들이 조인되어서 얻어지는 경우를 cartesian product라고 한다.
+
+
+
+Natrual join
+
+두 테이블에 공통 칼럼이 있는경우 조인조건없이 묵시적으로 조인이 되는 유형.
+
+
+
+left join
+
+```mysql
+select e.ename, e2.ename 
+from emp e LEFT OUTER JOIN emp e2
+       on e.mgr = e2.empno;
+```
+
+
+
+## 서브쿼리
+
+하나의 select문 안에 포함되어 있는 select 문장. 여러 절에서 사용할 수 있으나 select문 안에 포함되어 있는 것이 일반적.
+
+
+
+
+
+select deptno, ename, hiredate as '입사일', date(now()) '현재일',date(now())-date(hiredate) '근무일수', year(now())-year(hiredate) '근무년수', month(now())-month(hiredate)  from emp;
+
+
+
+```mysql
+select DATE_FORMAT( DATE_SUB( ADDDATE(hiredate,interval 60 day ), INTERVAL WEEKDAY( ADDDATE(hiredate,interval 60 day) ) DAY), '%Y-%m-%d') from emp;
+```
+
+```mysql
+select DATE_SUB( ADDDATE(hiredate,interval 60 day ), INTERVAL (8-WEEKDAY( ADDDATE(hiredate,interval 60 day) ) ) DAY) from emp;
+```
+
+
+
+
+
+## 이클립스에서 JDBC사용
+
+
+
+1. JDBC라이브러리 연결
+
+![image-20210219172528275](md-images/image-20210219172528275.png)
+
+프로젝트 안에 있는 JRE system Library 우클릭 - buildPath
+
+2. JDBC드라이버 설치 확인
+3. 접속 확인
+4. 종료
+

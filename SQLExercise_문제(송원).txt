@@ -1,0 +1,97 @@
+26. 문제) 부서가 30번 부서이고 급여가 $1,500 이상인 사람의 이름, 
+          부서 ,월급을 출력하라.
+select ename, dname, sal from emp e, dept d where e.deptno=d.deptno and e.sal>=1500;
+
+27. 문제) 이름의 첫 글자가 K로 시작하거나 부서번호가 30인 사람의 
+          사원번호, 이름, 부서번호를 출력하라.
+select empno, ename,deptno from emp where ename='k%' or deptno=30;
+
+28. 문제) 급여가 $1,500 이상이고 부서번호가 30번인 사원 중 직업이
+          MANAGER인 사람의 정보를 출력하라
+select * from emp where sal>=1500 and deptno=30 and job='MANAGER'; 
+
+29. 문제) 부서번호가 30인 사람 중 사원번호 SORT하라.
+select empno from emp where deptno=30 order by empno;
+
+30. 문제) 급여가 많은 순으로 SORT하라.
+select * from emp order by sal desc;
+
+31. 문제) 부서번호로 ASCENDING SORT한 후 급여가 많은 사람 순으로 
+          출력하라.
+select * from emp order by deptno asc, sal desc;
+
+32. 문제) 부서번호가 DESCENDING SORT하고, 이름 순으로 ASCENDING SORT,
+          급여 순으로 DESCENDING SORT 하라.
+select * from emp order by deptno desc, ename asc, sal desc;
+
+
+1. 문제) EMP Table에서 이름, 급여, 커미션 금액, 총액(sal + comm)을 
+         구하여 총액이 많은 순서로 출력하라. 단, 커미션이 NULL인
+         사람은 제외한다.
+select ename '이름' ,sal '급여', comm '커미션 금액', (sal+comm) as '총액' 
+from emp 
+where comm is not null order by '총액' desc;
+
+2. 문제) 10번 부서의 모든 사람들이게 급여의 13%를 보너스로 지불하기로 
+         하였다. 이름, 급여, 보너스 금액, 부서번호를 출력하라.
+select ename, sal, (sal*1.13) as bonus , deptno from emp where deptno=10;
+
+3. 문제) 30번 부서의 연봉을 계산하여 이름, 부서번호, 급여, 연봉을 
+         출력하라. 단, 연말에 급여의 150%를 보너스로 지급한다.
+select ename, deptno,sal,(sal*12)+sal*1.5 as '연봉' from emp where deptno=30;
+
+4. 문제 ) 부서번호가 20인 부서의 시간당 임금을 계산하여 출력하라. 
+          단, 1달의 근무일수는 12일이고, 1일 근무시간은 5시간이다. 
+          출력양식은 이름, 급여, 시간당 임금(소수이하 첫 번째 자리
+          에서 반올림)을 출력하라
+ select ename, sal, round(sal/60,0) as '시간당 임금' from emp where deptno=20;
+
+5. 문제) 급여가 $1,500부터 $3,000 사이의 사람은 급여의 15%를 회비로 
+         지불하기로 하였다. 이를 이름, 급여, 회비(소수점 두 자리에서
+         반올림)를 출력하라.
+select ename, sal,round(sal*0.15,2) as '회비' from emp where sal between 1500 and 3000;
+	
+6. 문제) 급여가 $2,000 이상인 모든 사람은 급여의 15%를 경조비로 내기
+         로 하였다. 이름, 급여, 커미션(소수점 이하 절삭)를 출력하라.
+select ename, sal,round(sal*0.15,0) as '회비' from emp where sal>=2000;
+
+
+7. 문제) 입사일부터 지금까지의 날짜수를 출력하라. 부서번호, 이름, 입사
+         일, 현재일, 근무일수(소수점 이하 절삭), 근무년수, 근무월수
+         (30일 기준), 근무주수를 출력하라.
+select deptno, ename, hiredate as '입사일', 
+date(now()) '현재일',
+TIMESTAMPDIFF(day,hiredate,now()) '근무일수', 
+TIMESTAMPDIFF(year,hiredate,now()) '근무년수', 
+TIMESTAMPDIFF(month,hiredate,now()) '근무월수',
+TIMESTAMPDIFF(week,hiredate,now()) '근무주수'
+from emp;
+
+
+8. 문제) 모든 사원의 실수령액을 계산하여 출력하라. 단, 급여가 많은 
+         순으로 이름, 급여, 실수령액을 출력하라.(실수령액은 금여에 
+         대해 10%의 세금을 뺀 금액)
+select ename,sal, sal*0.9 '실수령액' from emp order by sal desc;
+
+9. 문제) 입사일로부터 90일이 지난 후의 사원이름, 입사일, 90일 후의 
+         날, 급여를 출력하라.
+select ename, hiredate, ADDDATE(hiredate,interval 90 day) as '90일 후',sal from emp;
+
+10. 문제) 입사일로부터 6개월이 지난 후의 입사일, 6개월 후의 날짜, 급여
+          를 출력하라
+select hiredate, ADDDATE(hiredate,interval 60 day) as '60일 후',sal from emp;
+
+11. 문제) 입사한 달의 근무일수를 계산하여 부서번호, 이름, 근무일수를
+          출력하라.
+select deptno '부서번호', ename '이름', date(now())-date(hiredate) '근무일수' from emp;
+
+12. 문제) 모든 사원의 60일이 지난 후의 ‘MONDAY’는 몇 년, 몇 월, 
+          몇 일 인가를 구하여 이름, 입사일,’MONDAY’를 출력하라
+
+
+
+
+13. 문제) 입사일로부터 오늘까지의 일수를 구하여 이름, 입사일, 근무일수
+          를 출력하라.
+ select ename '이름', hiredate '입사일', date(now())-date(hiredate) '근무일수' from emp;
+
