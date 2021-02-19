@@ -503,7 +503,7 @@ select DATE_SUB( ADDDATE(hiredate,interval 60 day ), INTERVAL (8-WEEKDAY( ADDDAT
 
 ## 이클립스에서 JDBC사용
 
-
+라이브러리는 교수님께 받은것임
 
 1. JDBC라이브러리 연결
 
@@ -512,6 +512,82 @@ select DATE_SUB( ADDDATE(hiredate,interval 60 day ), INTERVAL (8-WEEKDAY( ADDDAT
 프로젝트 안에 있는 JRE system Library 우클릭 - buildPath
 
 2. JDBC드라이버 설치 확인
+
+
+
 3. 접속 확인
+
+```java
+//1. DB연결객체
+Connection conn;
+try {
+    //드라이버클래스://호스트주소:포트/데이터베이스명""아이디""패스워드"
+    //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB","root","ssong");
+    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306?serverTimezone=UTC","root","ssong");
+    
+    //밑에 소스와 위의 차이는 아래는 위 코드에서 생기는 버그를 잡아준다
+    System.out.println("데이터 베이스 연결 성공");
+}catch(Exception ex) {
+    System.out.println("에러 : "+ ex.getMessage());
+}
+```
+
+
+
 4. 종료
+
+
+
+### JDBC 실습
+
+
+
+1. 드라이버클래스://호스트주소:포트/데이터베이스명""아이디""패스워드"
+
+   뒤의 정보는 아이디와 비밀번호
+
+```java
+conn = DriverManager.getConnection("jdbc:mysql://localhost:3306?serverTimezone=UTC","root","ssong");
+```
+
+
+
+2. connection 객체가 연결에 성공하면 명령객체를 생성한다.
+
+   명령객체 : 쿼리문을 가지고 DBMS명령을 내리는 객체
+
+```java
+Statement st = conn.createStatement();
+```
+
+3. `ResultSet` : 만약 DB에서 정보획득이 필요하다면 정보를 담을 수 있는 객체
+
+```java
+ResultSet rs = null;
+```
+
+
+
+4. 연결
+
+```java
+//방법1
+if(st.execute("Show databases")) {
+				rs=st.getResultSet();	//하나의 row데이터를 가져온다.		
+    
+//excute(String sql) ==> boolean    
+			}
+//방법2
+rs=st.executeQuery("Show databases");
+//excute(String sql) ==> ResultSet	
+
+while(rs.next()){
+    String str=rs.getNString(1);
+	System.out.println(str);
+}
+```
+
+![image-20210219175809379](md-images/image-20210219175809379.png)
+
+rs로 한줄 씩 받아 오게 되므로 next()로 다음 줄을 받아온다.
 
