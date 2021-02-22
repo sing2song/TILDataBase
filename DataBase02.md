@@ -147,7 +147,7 @@ next()로 한 줄씩 읽어올 수 있다.
 
 1. 테이블 생성
 
-   계좌테이블(Account)
+   1.1 계좌테이블(Account)
 
    ```mysql
    int accid	(pk)	
@@ -176,17 +176,36 @@ next()로 한 줄씩 읽어올 수 있다.
    
    ```
 
+   ![image-20210222121925991](md-images/image-20210222121925991.png)
+
    
 
-   거래테이블
+   1.2 거래테이블
+
+```mysql
+create table accountio(
+idx int primary key auto_increment,
+accnum int,
+input int not null, 
+output int not null,
+balance int not null, 
+cd datetime default now(),
+foreign key(accnum) references account(accid));
+```
+
+![image-20210222121941428](md-images/image-20210222121941428.png)
 
 
 
-2. 계좌 테이블 쿼리문
+2. 쿼리문
+
+   2.1 계좌 테이블 쿼리문
 
 insert (계좌번호, 이름)
 
 insert (계좌번호,이름, 잔액)
+
+select (계좌번호로 검색 ->모든 정보 획득)
 
 *---------해당 계좌가 가지고있는 잔액을 얻어와야한다-------
 
@@ -196,7 +215,7 @@ update (계좌번호로 찾아서 출금처리)
 
 delete (계좌번호로 해당 계좌 삭제)
 
-전체출력
+select (모든 계좌 출력)
 
 ```mysql
 insert into Account (accid, name)
@@ -205,6 +224,8 @@ values (계좌번호, 이름);
 insert into account (accid,name,balance)
 values (계좌번호, 이름, 잔액);
 
+select * from where accid=계좌번호;
+
 update account set balance=balance+입금액
 where accid=계좌번호;
 
@@ -212,5 +233,59 @@ update account set balance=balance-출금액
 where accid=계좌번호;
 
 delete from account where accid=계좌번호;
+
+select * from account;
+```
+
+
+
+​		2.2 거래 테이블 쿼리문
+
+```mysql
+insert into accountio(accnum,input,output,balance) 
+values( 10, 1000, 0, (select balance from account where accid=10));
+
+select * from accountio where accnum= 10;
+```
+
+
+
+
+
+
+
+### jdbc연결실습
+
+```java
+public class AccountDB {
+	Connection con = null;
+	Statement stmt = null;
+	
+	public AccountDB() throws Exception {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("드라이버 로딩 성공");
+			String dburl = "jdbc:mysql://localhost/sampleDB";
+			con= DriverManager.getConnection(dburl,"root","ssong");
+			System.out.println("데이터베이스 연결 성공");
+			
+		}catch(Exception e) {
+			throw new Exception("데이터베이스 연결 오류");
+			
+		}
+	}
+}
+
+```
+
+오류가 났다! 왜?
+
+=> 포트번호와 class.forname("com.mysql.cj.jdbc.Driver") 명을 지정해주지 않았다!
+
+수정값
+
+```java
+conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB?serverTimezone=UTC","root","ssong");
+			
 ```
 
