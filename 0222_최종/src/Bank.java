@@ -103,28 +103,21 @@ public class Bank {
 			System.out.println("[입금오류]" + ex.getMessage());
 		}
 	}
-	
-		
+			
 	public void OutputMoney() {
 		try {
+			//1. client
 			int accnum = BitGlobal.InputNumber("계좌번호 입력");
-			int money = BitGlobal.InputNumber("출금액 입력");
-			int idx = NumberToIdx(accnum);
-			if(idx == -1)
-				throw new Exception("해당 계좌번호는 존재하지 않습니다.");
+			int money = BitGlobal.InputNumber("입금액 입력");
 			
-			Account acc = (Account)arr.getData(idx);
-			acc.OutputMoney(money);
+			//2. server 
+			boolean result = db.Update(accnum,  false, money);
 			
-			//-------------- 출금 성공------------------------
-			//1. 계좌번호 : accnum
-			//2. 입금 : 0
-			//3. 출금 : money
-			//4. 잔액 : acc.getBalance()
-			//--------------------------------------------------
-			InsertAccountIO(accnum, 0, money, acc.getBalance());
-			
-			System.out.println(money + "원이 출금되었습니다.");
+			//3. client
+			if(result == false)
+				throw new Exception("");
+			else			
+				System.out.println(money + "원이 출금되었습니다.");
 		}
 		catch(Exception ex) {
 			System.out.println("[출금오류]" + ex.getMessage());
@@ -133,13 +126,17 @@ public class Bank {
 	
 	public void DeleteAccount() {			
 		try {
+			//1. client
 			int accnum = BitGlobal.InputNumber("계좌번호 입력");
-			int idx = NumberToIdx(accnum);
-			if(idx == -1) 
-				throw new Exception("없는 계좌번호 입니다.");	//<=======
 			
-			arr.Delete(idx);
-			System.out.println("삭제되었습니다.");
+			//2. server
+			boolean isreturn = db.Delete(accnum);
+			
+			//3. client
+			if(isreturn == true)
+				System.out.println("삭제되었습니다.");
+			else
+			    throw new Exception("");
 		}
 		catch(Exception ex) {
 			System.out.println("[삭제 에러] " + ex.getMessage());

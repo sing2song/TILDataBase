@@ -16,6 +16,8 @@ public class AccountDB {
 			System.out.println("드라이버 로딩 성공");
 			//"jdbc:mysql://localhost:3306?serverTimezone=UTC","root","1234");
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB?serverTimezone=UTC","root","1234");
+			//query : set autocommit = false;
+			con.setAutoCommit(false);
 			System.out.println("데이터베이스 연결성공");
 			stmt = con.createStatement();
 			System.out.println("연결객체 획득 성공");
@@ -38,12 +40,18 @@ public class AccountDB {
 			"values( %d, %d, %d, (select balance from account where accid=%d));",
 			 id, 0,0,id);
 			
-			ExcuteUpdate(query);		
+			ExcuteUpdate(query);	
+			
+			con.commit();			//<--------------------------------
 			
 			return true;
 		}
 		catch(Exception ex) {
 			System.out.println(ex.getMessage());
+			try {
+			con.rollback();			//<=-------------------------------
+			}
+			catch(Exception ex1) {}
 			return false;
 		}
 	}
@@ -157,7 +165,7 @@ public class AccountDB {
 				int output = rs.getInt(4); // output
 				int balance1 = rs.getInt(5); // balance
 				Date ndate1 = rs.getDate(6);  //거래일시.... 
-				accio.add(new AccountIO(accnum, input, output, balance1));
+				accio.add(new AccountIO(accnum, input, output, balance1, ndate1));
 			}
 			return true;
 		}

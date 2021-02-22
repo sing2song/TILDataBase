@@ -22,7 +22,7 @@ public class Account {
 
 	public Account(int accid, String name, int balance, Date dt) {
 		this(accid, name, balance);
-		this.newtime.set(dt.getYear(), dt.getMonth(), dt.getDay());
+		this.newtime.setTime(dt); // Calendar <---- Date
 	}
 	
 	public int getAccid() {
@@ -106,6 +106,22 @@ public class Account {
 		this.accid = accid;
 		this.name = name;
 		this.balance = balance;
-		//this.newtime;		//贸府秦具 瞪 何盒.
+		this.newtime.setTime(ndate);  // Calendar <---- Date
 	}	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

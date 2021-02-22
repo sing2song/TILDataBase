@@ -195,6 +195,15 @@ foreign key(accnum) references account(accid));
 
 ![image-20210222121941428](md-images/image-20210222121941428.png)
 
+```mysql
+create table QUEUE(
+queueid int primary key auto_increment,
+personid int not null,
+busid int not null,
+date datetime default now()
+);
+```
+
 
 
 2. 쿼리문
@@ -338,3 +347,24 @@ rollback : commit된 위치까지 돌아가는 것.
 
 1. 중복 데이터 저장 방지! ex. 회원번호, 이름, xxxx
 2. 데이터 테이블[회원, 버스], 관계 테이블[예약]
+
+--------------------------------
+
+[회원] 1. 홍길동 2. 김길동 3. 고길동
+
+[버스] 버스번호 좌석수(max), 예약자수(count), 좌석상태(문자열)
+
+-----
+
+10	40	10	000000100100101000000
+
+11	40	20	101010010110101011111
+
+----
+
+[관계] 어떤 회원이 어떤 버스를 예약했다.
+
+1(KF)번 회원이 10(FK)번 버스를 예약했다. + 날짜/ 시간 + 몇번째 좌석
+
+
+

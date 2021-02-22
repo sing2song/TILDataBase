@@ -3,6 +3,7 @@
 
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AccountIO {
 	private int accnum;
@@ -19,6 +20,12 @@ public class AccountIO {
 		this.balance = balance;
 		cd = Calendar.getInstance();
 	}
+	
+	public AccountIO(int accnum,int input,int output,int balance, Date dt) {
+		this(accnum, input, output, balance);
+		cd.setTime(dt);
+	}
+
 	
 	//get¸Þ¼­µå
 	public int getAccNum() { 
