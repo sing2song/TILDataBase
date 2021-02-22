@@ -1,0 +1,216 @@
+# Database
+
+## 이클립스에서 JDBC사용
+
+`Statement` : 일반적인 명령객체는 Statement sql을 문자열로 보내기 가장 간단한 것.
+
+`PreparedStatement `: 가변적인 정보들 ex.회원정보
+
+`CallaleStatement` : 프로시저를 사용할 때. 복잡한 형태의 쿼리문들은 데이터베이스에다가 함수형태로 등록시켜서 사용할 수 있음. 함수형태로 등록하는 형태를 프로시저라하는데 그를 부를때 사용한다.
+
+
+
+## DDL
+
+pdf 143p
+
+> table생성
+
+```mysql
+create table 테이블명(
+	필드명1 타입[null/not Null] [default] [auto_increment],
+	필드명1 타입[null/not Null] [default] [auto_increment],
+	필드명1 타입[null/not Null] [default] [auto_increment],
+	...
+    primary key(필드명)
+);
+```
+
+primary key는 반드시 값을 존재해야하므로 notnull속성을 가짐. unique함.
+
+속성값의 빈 값 허용 여부는 null 또는 not null로 설정
+
+default키워드와 함께 입력하지 않았을 때의 초기값을 지정할 수 있다.
+
+입력하지않고 자동으로 1씩 증가하는 번호를 위한 auto_increment
+
+
+
+
+
+> table -컬럼 추가/ 삭제/ 수정
+
+alter table 테이블명 add 필드명 타입 [null / not null] [default] [auto_increment];
+
+alter table 테이블명 drop 필드명;
+
+alter table 테이블명 change 필드명 새필드명타입 [null/not null] [default] [auto_increment];
+
+ex)
+
+```mysql
+Member 테이블의 Primary Key no에 자동 1씨기 증가하는 속성을 추가 해 보세요.
+ALTER TABLE member
+ CHANGE no no INT NOT NULL AUTO_INCREMENT 
+```
+
+
+
+> table 삭제
+
+drop table 테이블명
+
+
+
+> table 이름변경
+
+alter table 테이블명 rename 변경이름
+
+
+
+## DML
+
+
+
+한글 1byte 4byte로 쓸 수 있다. 
+
+utf8이 나오면 유니코드를 사용하는 것. (**set names utf8**)
+
+
+
+> 데이터 삽입
+
+insert into 테이블명(필드1, 필드2, 필드3, 필드4,...) 
+
+values (필드1값,필드2값,필드3값, 필드4값...)
+
+필드명을 생략했을 경우 모든 필드값을 반드시 입력해야한다.
+
+
+
+> 데이터 변경
+
+update 테이블명 
+
+\set 필드1=필드1값, 필드2=필드2값, 필드3=필드3값,...
+
+where 조건식
+
+특정 row값만 변경할 수 있다. 
+
+조건식을 주지않으면 전체 row가 영향을 미치니 조심!
+
+
+
+> 데이터 삭제
+
+delete from 테이블명 where 조건식
+
+
+
+
+
+## JDBC
+
+연결방법, 필요한 것들
+
+1. import java.sql.*;
+2. 드라이버를 로드
+
+3. connection객체
+
+4. 명령객체
+
+5. result객체
+
+6. 모든 객체를 닫는다.
+
+
+
+statement객체에는 대표적 3가지 메소드
+
+execute("sql") < 모든 SQL이 들어감
+
+executeQuery("sql") < select 쿼리문
+
+executeUpdate("sql") < insert, update,delete
+
+
+
+위의 내용들을 resultSet으로 받아온다. 인덱스는 1번부터 가능하다.
+
+next()로 한 줄씩 읽어올 수 있다. 
+
+
+
+## 실습
+
+1. 테이블 생성
+
+   계좌테이블(Account)
+
+   ```mysql
+   int accid	(pk)	
+   String name	not null
+   int balance	DEFAULT 0	(방법적인 부분검색)
+   Calendar newtime 현재날짜/시간(설정 방법 검색)
+   #-----------------------------
+   
+   >>쿼리문
+   #1.
+   create table Account (
+   accid int ,
+   name varchar(10) NOT NULL,
+   balance	int default 0,
+   newtime	datetime default current_timestamp,#now()도 가능
+   PRIMARY KEY(accid)
+   );
+   
+   #2.
+   create table account(
+   accid int primary key,
+   name varchar(30) not null,
+   balance int default 0,
+   newtime datetime default now()
+   );
+   
+   ```
+
+   
+
+   거래테이블
+
+
+
+2. 계좌 테이블 쿼리문
+
+insert (계좌번호, 이름)
+
+insert (계좌번호,이름, 잔액)
+
+*---------해당 계좌가 가지고있는 잔액을 얻어와야한다-------
+
+update (계좌번호로 찾아서 입금처리) : 기존잔액 + 입금액
+
+update (계좌번호로 찾아서 출금처리)
+
+delete (계좌번호로 해당 계좌 삭제)
+
+전체출력
+
+```mysql
+insert into Account (accid, name)
+values (계좌번호, 이름);
+
+insert into account (accid,name,balance)
+values (계좌번호, 이름, 잔액);
+
+update account set balance=balance+입금액
+where accid=계좌번호;
+
+update account set balance=balance-출금액
+where accid=계좌번호;
+
+delete from account where accid=계좌번호;
+```
+
