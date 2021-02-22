@@ -19,12 +19,20 @@ public class Start {
 			//acc.Update(20, true, 2000);
 			//10 : 800, 20 : 4000
 
-			acc.Delete(10);
-			//acc.Select(20);
-			//ArrayList<Account> acclist = acc.Select();
-			//for(Account ac : acclist) {
-			//	ac.Print();
-			//}
+			//acc.Delete(10);
+			
+			ArrayList<AccountIO> accio = new ArrayList<AccountIO>();
+			//acc.Select(20,accio);
+			Account ac = acc.Select(20,accio);//전체출력			
+			ac.Print();
+			
+			System.out.println("------------------------------------");
+			for(AccountIO acio : accio) {
+				acio.Print();
+			}
+			
+			
+			
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

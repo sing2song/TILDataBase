@@ -117,7 +117,13 @@ public class Account {
 		System.out.println(GetTime());
 	}
 
-
+	public void setData(int accid,String name, int balance, Date ndate) {
+		this.accid=accid;
+		this.name=name;
+		this.balance=balance;
+		this.newtime=Calendar.getInstance();
+		this.newtime.setTime(ndate);
+	}
 
 
 
