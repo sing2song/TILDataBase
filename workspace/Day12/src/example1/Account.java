@@ -1,3 +1,4 @@
+package example1;
 
 
 import java.util.Calendar;
@@ -25,6 +26,11 @@ public class Account {
 		this.newtime.set(dt.getYear(), dt.getMonth(), dt.getDay());
 	}
 	
+	public Account(int accid, String name, int balance, Calendar dt) {
+		this(accid, name, balance);
+		this.newtime = dt;
+	}
+
 	public int getAccid() {
 		return accid;
 	}
@@ -81,10 +87,11 @@ public class Account {
 	}
 	
 	public String GetTime() {
-		String temp = String.format("%02d:%02d", 
-				newtime.get(Calendar.HOUR_OF_DAY),newtime.get(Calendar.MINUTE));
+		String temp = String.format("%02d:%02d:%02d", 
+				newtime.get(Calendar.HOUR_OF_DAY),newtime.get(Calendar.MINUTE), newtime.get(Calendar.SECOND));
 		return temp;
 	}
+
 	
 	public void Println() {
 		System.out.println("[계좌번호]" + accid);

@@ -289,3 +289,52 @@ conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB?serverT
 			
 ```
 
+
+
+
+
+commit : user가 메모리를 거쳐 DB에 저장하는 것.
+
+rollback! 메모리에 저장되었으나 DB에 올리지않고 돌아감!
+
+
+
+### 명령객체
+
+Statement는 String.format("",id,등등); 을 이용해서 sql문을 조금 복잡하게 처리한다.
+
+이 부분을 보안하는 것이 PreparedStatement
+
+PreparedStatement는 미리 쿼리문의 포맷을 설정한다!
+
+ex
+
+```java
+//AccountDB1.java
+PreparedStatement stmt_insert = null;
+
+BitGlobalStatement.state_Insert.setInt(1, id);
+BitGlobalStatement.state_Insert.setString(2, name);
+			int i= BitGlobalStatement.state_Insert.executeUpdate();
+
+
+///////////////////////////////
+//BitGlobalStatement.java
+
+String Insert = "insert into account(accid,name) values(?,?);";;
+			state_Insert = con.prepareStatement(Insert);
+
+```
+
+?(물음표)안에 설정하는 형식
+
+rollback : commit된 위치까지 돌아가는 것.
+
+
+
+## 팀플
+
+저번에 만든 버스환승....테이블 설계하기
+
+1. 중복 데이터 저장 방지! ex. 회원번호, 이름, xxxx
+2. 데이터 테이블[회원, 버스], 관계 테이블[예약]

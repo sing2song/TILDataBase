@@ -1,6 +1,7 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,7 @@ public class AccountDB {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("드라이버 로딩 성공");
 			//"jdbc:mysql://localhost:3306?serverTimezone=UTC","root","1234");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB?serverTimezone=UTC","root","1234");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sampleDB?serverTimezone=UTC","root","ssong");
 			System.out.println("데이터베이스 연결성공");
 			stmt = con.createStatement();
 			System.out.println("연결객체 획득 성공");
@@ -38,12 +39,19 @@ public class AccountDB {
 			"values( %d, %d, %d, (select balance from account where accid=%d));",
 			 id, 0,0,id);
 			
-			ExcuteUpdate(query);		
+			ExcuteUpdate(query);
+			
+			con.commit();//<------------
 			
 			return true;
 		}
 		catch(Exception ex) {
 			System.out.println(ex.getMessage());
+			try {
+				con.rollback();
+			} catch (SQLException ex1) {
+				
+			}
 			return false;
 		}
 	}
