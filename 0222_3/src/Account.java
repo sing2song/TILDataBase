@@ -58,19 +58,19 @@ public class Account {
 		this.newtime =newtime;
 	}
 	
-	//ë©”ì„œë“œ
+	//¸Ş¼­µå
 	public void InputMoney(int money) throws Exception {
 		if(money<0) 
-			throw new Exception("ì˜ëª»ëœ ê¸ˆì•¡ì…ë‹ˆë‹¤.");
+			throw new Exception("Àß¸øµÈ ±İ¾×ÀÔ´Ï´Ù.");
 		balance += money;
 	}
-	//ë””ë²„ê¹… : ì‹¤í–‰ì‹œ ì˜¤ë¥˜ë¥¼ ì°¾ëŠ” ê³¼ì •!-> í•´ê²°
-	// í™•ì¸í•  ì½”ë“œì— breakpointë¥¼ ì„¤ì •í•œ í›„ -> ë””ë²„ê¹…ì„ ì‹¤í–‰
+	//µğ¹ö±ë : ½ÇÇà½Ã ¿À·ù¸¦ Ã£´Â °úÁ¤!-> ÇØ°á
+	// È®ÀÎÇÒ ÄÚµå¿¡ breakpoint¸¦ ¼³Á¤ÇÑ ÈÄ -> µğ¹ö±ëÀ» ½ÇÇà
 	public void OutputMoney(int money) throws Exception {
 		if(money<0) 
-			throw new Exception("ì˜ëª»ëœ ê¸ˆì•¡ì…ë‹ˆë‹¤.");
+			throw new Exception("Àß¸øµÈ ±İ¾×ÀÔ´Ï´Ù.");
 		if(money > balance) 
-			throw new Exception("ì”ì•¡ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+			throw new Exception("ÀÜ¾×ÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
 		balance -= money;
 	}
 	
@@ -87,17 +87,17 @@ public class Account {
 	}
 	
 	public void Println() {
-		System.out.println("[ê³„ì¢Œë²ˆí˜¸]" + accid);
-		System.out.println("[ì´ë¦„]" + name);
-		System.out.println("[ì”ì•¡]" + balance + "ì›");
-		System.out.println("[ê°œì„¤ì¼ì] " + GetDate());
-		System.out.println("[ê°œì„¤ì‹œê°„] " + GetTime());
+		System.out.println("[°èÁÂ¹øÈ£]" + accid);
+		System.out.println("[ÀÌ¸§]" + name);
+		System.out.println("[ÀÜ¾×]" + balance + "¿ø");
+		System.out.println("[°³¼³ÀÏÀÚ] " + GetDate());
+		System.out.println("[°³¼³½Ã°£] " + GetTime());
 	}
 	
 	public void Print() {		
 		System.out.print("[" + accid + "] ");
 		System.out.print(name + " ");
-		System.out.print(balance + "ì› ");
+		System.out.print(balance + "¿ø ");
 		System.out.print(GetDate() + " ");
 		System.out.println(GetTime());
 	}
@@ -106,6 +106,6 @@ public class Account {
 		this.accid = accid;
 		this.name = name;
 		this.balance = balance;
-		//this.newtime;		//ì²˜ë¦¬í•´ì•¼ ë  ë¶€ë¶„.
+		//this.newtime;		//Ã³¸®ÇØ¾ß µÉ ºÎºĞ.
 	}	
 }

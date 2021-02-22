@@ -11,7 +11,7 @@ public class AccountIO {
 	private int balance;
 	Calendar cd;	
 	
-	//ìƒì„±ìë¥¼ í†µí•œ ì €ì¥
+	//»ı¼ºÀÚ¸¦ ÅëÇÑ ÀúÀå
 	public AccountIO(int accnum,int input,int output,int balance) {
 		this.accnum = accnum;
 		this.input = input;
@@ -20,7 +20,7 @@ public class AccountIO {
 		cd = Calendar.getInstance();
 	}
 	
-	//getë©”ì„œë“œ
+	//get¸Ş¼­µå
 	public int getAccNum() { 
 		return accnum;
 	}
@@ -37,7 +37,7 @@ public class AccountIO {
 		return temp;
 	}
 	
-	//ì¶œë ¥ê¸°ëŠ¥(ë‹¨ì¼ë¼ì¸ìœ¼ë¡œ ì¶œë ¥...)
+	//Ãâ·Â±â´É(´ÜÀÏ¶óÀÎÀ¸·Î Ãâ·Â...)
 	public void Print() {
 		System.out.print("[" + accnum + "] ");
 		System.out.print(input + "\t");
