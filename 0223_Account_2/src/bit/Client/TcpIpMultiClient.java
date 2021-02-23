@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class TcpIpMultiClient {
 	final int PORT = 4000;
-	final String SERVER_IP = "14.32.18.42"; //
-	final String name = "ssong";
+	final String SERVER_IP = "127.0.0.1"; //14.32.18.42
+	final String name = "최창민";
 	
 	//메서드
 	public void Run() {

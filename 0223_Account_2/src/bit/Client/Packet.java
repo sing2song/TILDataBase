@@ -16,25 +16,23 @@ package bit.Client;
 
 public class Packet {
 	public static String MakeAccount(int id, String name, int balance) {
-		
-		String msg = "";
+		String msg = null;
 		msg +=  "MakeAccount" + "@";
 		msg += id + "#";
 		msg += name + "#";
 		msg += balance;
-		System.out.println("클라이언트 패킷 MakeAccount msg:"+msg);
 		return msg;
 	}
 
 	public static String SelectAccount(int id) {
-		String msg = "";
+		String msg = null;
 		msg += "SelectAccount" + "@";
 		msg += id;
 		return msg;
 	}
 
 	public static String InputAccount(int id,int balance) {
-		String msg = "";
+		String msg = null;
 		msg +=  "InputAccount" + "@";
 		msg += id + "#";
 		msg += balance;
@@ -42,7 +40,7 @@ public class Packet {
 	}
 
 	public static String OutputAccount(int id,int balance) {
-		String msg = "";
+		String msg = null;
 		msg +=  "OutputAccount" + "@";
 		msg += id + "#";
 		msg += balance;
@@ -50,7 +48,7 @@ public class Packet {
 	}
 
 	public static String DeleteAccount(int id) {
-		String msg = "";
+		String msg = null;
 		msg +=  "DeleteAccount" + "@";
 		msg += id;
 		return msg;

@@ -8,69 +8,61 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class TcpIpMultiClient {
+public class TcpIpMultiClient2 {
 	final int PORT = 4000;
-	final String SERVER_IP = "14.32.18.42"; //
-	final String name = "ssong";
-	
+	final String SERVER_IP = "127.0.0.1"; //14.32.18.42
+	private ClientSender2 clientsender = null;
+
 	//메서드
 	public void Run() {
 		try{
 			//소켓 생성 및 연결!
 			Socket socket = new Socket(SERVER_IP, PORT);
-			System.out.println("서버 연결 됨");
-			   
-			Thread sender = new ClientSender(socket,name);
-			Thread receiver = new ClientReceiver(socket); 			   
-			sender.start();
+			System.out.println("서버 연결 됨");	
+			clientsender = new ClientSender2(socket);		//일반 객체
+			Thread receiver = new ClientReceiver2(socket); 	//쓰레드 객체			   
 			receiver.start();			
 		}catch(ConnectException e){
 			e.printStackTrace();
 		}catch(Exception e) { }
 	}	
+
+	//데이터 전송 기능
+	public void SendMessage(String msg) {
+		try {
+			clientsender.SendMessage(msg);
+		}
+		catch(Exception ex) {		
+			System.out.println("전송 오류");
+		}
+	}
 }
 
 //송신 전용 thread
-class ClientSender extends Thread{
-	private Socket socket;
+class ClientSender2{
+	//private Socket socket;
 	private PrintWriter writer;
-	private String name;
 	 
-	public ClientSender(Socket socket, String name){
-	  this.socket=socket;
-	  this.name=name;
+	public ClientSender2(Socket socket){
+	  //this.socket=socket;
 	  try{
 		  writer = new PrintWriter(socket.getOutputStream());		  
 	  }catch(Exception e) {}
 	}
-		
-	@Override
-	public void run(){
-		 Scanner kb=new Scanner(System.in);
-		 if(writer !=null){
-			 writer.println(name);		//이름이 전송!
-			 writer.flush();
-		 }
-	  
-		 while(writer !=null){		//<========================언제 writer가 null?
-			 String msg = kb.nextLine();		//1. 전송 문자열 획득
-			 writer.println("["+name+"]"+msg);	//2. 전송
-			 writer.flush();
-		 }
-		 kb.close();
-		 try{
-			 socket.close();
-		 }catch(IOException e){e.printStackTrace();}
-	 }
+	
+	public void SendMessage(String msg) {		
+		writer.println(msg);			
+		writer.flush();
+	}
 }
 
 //수신 전용 thread
-class ClientReceiver extends Thread{
+class ClientReceiver2 extends Thread{
 	 private Socket socket;
 	 private BufferedReader reader;
 	 
 	 //생성자
-	 public ClientReceiver(Socket socket){
+	 public ClientReceiver2(Socket socket){
 		 this.socket=socket;
 		 try{
 			 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));	   

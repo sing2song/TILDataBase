@@ -11,8 +11,8 @@ public class BitGlobal {
 		System.out.println("*************************************************");
 		System.out.println(" Java 전문가 과정");
 		System.out.println(" 2021.02.23");
-		System.out.println(" 네트워크, DB를 활용한 계좌 관리 프로그램");
-		System.out.println(" 이송원");
+		System.out.println(" 네트웤, DB를 활용한 계좌 관리 프로그램");
+		System.out.println(" 최창민");
 		System.out.println("*************************************************\n");
 		Pause();
 	}

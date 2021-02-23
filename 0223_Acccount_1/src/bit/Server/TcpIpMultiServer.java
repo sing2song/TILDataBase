@@ -15,7 +15,7 @@ public class TcpIpMultiServer {
 	//대기소켓에서 사용할 포트번호
 	final int PORT = 4000;				
 	//접속한 클라이언트들과 대화하기 위한 정보 저장!
-	HashMap<Socket, PrintWriter>clients= new HashMap<Socket, PrintWriter>(); 
+	HashMap<String, PrintWriter>clients= new HashMap<String, PrintWriter>(); 
 	//대기소켓
 	private ServerSocket serverSocket =null;	
 	
@@ -46,7 +46,6 @@ public class TcpIpMultiServer {
 		serverSocket = new ServerSocket(PORT);	//14.32.18.42
 		System.out.println("서버시작,접속 기다림");		
 	}
-	
 }
 
 //쓰레드 클래스
@@ -56,13 +55,14 @@ class ServerReceiver extends Thread{
 	private BufferedReader reader;	//read객체(클라이언트가 보낸 정보를 읽을 수 있다.)
 	private PrintWriter writer;		//write객체(클라이언트에게 정보를 보낼 수 있다.)
 	//----------------------------------------------
-	private HashMap<Socket, PrintWriter> clients;
+	private HashMap<String, PrintWriter> clients;
 	
 	//생성자
-	public ServerReceiver(Socket socket, HashMap<Socket, PrintWriter>clients) {
+	public ServerReceiver(Socket socket, HashMap<String, PrintWriter>clients) {
 		this.socket = socket;
 		this.clients = clients;
 		
+		//
 		try{
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new PrintWriter(socket.getOutputStream());
@@ -70,36 +70,41 @@ class ServerReceiver extends Thread{
 
 	}
 	
-	//쓰레드 함수[메시지 수신 -> 메니저 전달]
+	//쓰레드 함수
 	@Override
 	public void run() {
+		String name="";
 		try{
+			//Init -----------------------------------------------------------
+			//name = reader.readLine();	 //1) 첫번째 Receive
+		   // clients.put(name,writer);	 //<------------------------ [저장!]		    
+		   // sendToAll(name+"들어옴"); 	 //2) 전체 전송(1대 다 통신)		    
+		   // System.out.println("현재 접속자수"+clients.size()+"이다.");
+		   // System.out.println(name + "들어옴");
+		    //----------------------------------------------------------------
+
 		    //Run------------------------------------------------------------
 		   while(reader!=null){
-			   String msg = reader.readLine();						//1) 데이터 수신
-			   String msg1 = Manager.getInstance().RecvData(msg);	//2) 데이터 처리를 관리모듈에게 전달!
-			   //sendToAll(msg); 									//3) 결과를 전송
-			   SendMessage(msg1);
+			   String msg = reader.readLine();	//1) 데이터 수신
+			   System.out.println(msg);//2) 데이터 처리
+			   //sendToAll(msg); 					//3) 결과를 전송		
 		   }
-		   //-----------------------------------------------------------------	
+		   //-----------------------------------------------------------------
+		  
+		  
 		}catch(Exception e){e.printStackTrace();}
-		finally {	//무조건 실행이 필요한 코드가 존재할 경우![더 이상 해당 소켓은 필요 없다]		  
-		   clients.remove(socket);	//<------------------------------- [삭제!]
+		finally {	//무조건 실행이 필요한 코드가 존재할 경우![더 이상 해당 소켓은 필요 없다]
+		   sendToAll(name+"나갔어");	//<------------------
+		   clients.remove(name);	//<------------------------------- [삭제!]
 		   System.out.println("[클라이언트 해제] " + socket.getInetAddress()+":"+socket.getPort());
-		   System.out.println("현재 서버접속자수"+clients.size());		   
+		   System.out.println("현재 서버접속자수"+clients.size());
+		   
 		   try{				
 			   socket.close();
 		   }catch(Exception e){e.printStackTrace();}
 		}		
 	}
-	
-	//[ACK메시지 전송(메니저에 의해 호출)]
-	public void SendMessage(String msg) {
-	//	writer.println(msg);	//전송!!!!!!![출력버퍼에 저장]
-	//	writer.flush();			//[출력버퍼에 있는 정보를 밀어내는 역할]
-		System.out.println("[ACK메시지]" + msg);		//<============ test코드------
-	}
-	
+
 	//1대 다 통신 함수
 	void sendToAll(String msg){
 		//저장소 순회 객체	
