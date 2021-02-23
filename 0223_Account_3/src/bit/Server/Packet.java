@@ -14,7 +14,7 @@ package bit.Server;
 */
 public class Packet {
 	public static String MakeAccount_ack(int id, boolean b) {
-		String msg = null;
+		String msg = "";
 		msg +=  "MakeAccount_ack" + "@";
 		msg += id + "#";
 		if(b)

@@ -4,10 +4,11 @@ package bit.Client;
 public class Bank {
 	//통신 모듈
 	//client의 Run메서드 호출시 서버 접속 연결!
-	private TcpIpMultiClient2 client = new TcpIpMultiClient2();
+	private TcpIpMultiClient2 client;
 	
 	//Bank생성시 서버 접속 요청!
 	public Bank() {
+		client = new TcpIpMultiClient2(this);  //자신을 넘긴다..............
 		client.Run(); 
 	}
 	
@@ -30,6 +31,7 @@ public class Bank {
 			int money = BitGlobal.InputNumber("입금액");
 					
 			String msg = Packet.MakeAccount(number, name, money);
+			//출력!!!!<----------------------------------- 확인{1번 위치}---------
 			client.SendMessage(msg);
 			System.out.println("서버로 신규계좌 정보를 전송");
 		}
@@ -92,6 +94,18 @@ public class Bank {
 		}	
 	}
 	//-----------------------------------------------------------------------
+	
+	//--------------------------- 통신모듈에서 수신된 데이터를 받는 기능 -------------
+	public void RecvData(String msg) {
+		Parser.RecvData(msg, this);
+	}
+	
+	public void MakeAccount_Ack(int number, String result) {
+		if(result.equals("S"))
+			System.out.println(number + "계좌 생성 성공");
+		else
+			System.out.println(number + "계좌 생성 실패");
+	}
 }
 
 

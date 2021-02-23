@@ -95,8 +95,8 @@ class ServerReceiver extends Thread{
 	
 	//[ACK메시지 전송(메니저에 의해 호출)]
 	public void SendMessage(String msg) {
-	//	writer.println(msg);	//전송!!!!!!![출력버퍼에 저장]
-	//	writer.flush();			//[출력버퍼에 있는 정보를 밀어내는 역할]
+		writer.println(msg);	//전송!!!!!!![출력버퍼에 저장]
+		writer.flush();			//[출력버퍼에 있는 정보를 밀어내는 역할]
 		System.out.println("[ACK메시지]" + msg);		//<============ test코드------
 	}
 	

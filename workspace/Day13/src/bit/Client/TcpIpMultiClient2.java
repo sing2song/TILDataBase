@@ -12,7 +12,13 @@ public class TcpIpMultiClient2 {
 	final int PORT = 4000;
 	final String SERVER_IP = "14.32.18.42"; //127.0.0.1
 	private ClientSender2 clientsender = null;
-
+	private Bank bank;
+	
+	//생성자
+	public TcpIpMultiClient2(Bank bank) {
+		this.bank=bank;	//쌍방참조. 양쪽다 메소드 접근이 가능하게 된다
+	}
+	
 	//메서드
 	public void Run() {
 		try{
@@ -20,7 +26,7 @@ public class TcpIpMultiClient2 {
 			Socket socket = new Socket(SERVER_IP, PORT);
 			System.out.println("서버 연결 됨");	
 			clientsender = new ClientSender2(socket);		//일반 객체
-			Thread receiver = new ClientReceiver2(socket); 	//쓰레드 객체			   
+			Thread receiver = new ClientReceiver2(socket,bank); 	//쓰레드 객체			   
 			receiver.start();			
 		}catch(ConnectException e){
 			e.printStackTrace();
@@ -60,10 +66,12 @@ class ClientSender2{
 class ClientReceiver2 extends Thread{
 	 private Socket socket;
 	 private BufferedReader reader;
+	 private Bank bank;				//멤버필드 구성
 	 
 	 //생성자
-	 public ClientReceiver2(Socket socket){
+	 public ClientReceiver2(Socket socket,Bank bank){
 		 this.socket=socket;
+		 this.bank=bank;			//생성자에 대입
 		 try{
 			 reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));	   
 		 }catch(IOException e) {}
@@ -74,7 +82,7 @@ class ClientReceiver2 extends Thread{
 		 while(reader !=null){
 			 try{
 				 String msg = reader.readLine();	//1. 수신
-				 									//2. 연산
+				 bank.RecvData(msg);				//2. 연산
 				 System.out.println(msg);			//3. 결과출력
 			 }catch(IOException e){}
 		 }

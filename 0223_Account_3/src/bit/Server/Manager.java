@@ -38,12 +38,12 @@ public class Manager {
 		System.out.println("[수신메시지]");		//<============ test코드------
 		acc.Print();							//<============ test코드------
 		if( accountlist.put(acc.getAccid(), acc) == null)
-			msg = Packet.MakeAccount_ack(id, false);
-		else
 			msg = Packet.MakeAccount_ack(id, true);
+		else
+			msg = Packet.MakeAccount_ack(id, false);
 		
 		//클라이언트에 전송!
-		return msg;		
+		return msg;
 	}
 	
 }

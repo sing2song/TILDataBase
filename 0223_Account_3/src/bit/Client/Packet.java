@@ -16,7 +16,7 @@ package bit.Client;
 
 public class Packet {
 	public static String MakeAccount(int id, String name, int balance) {
-		String msg = null;
+		String msg = "";
 		msg +=  "MakeAccount" + "@";
 		msg += id + "#";
 		msg += name + "#";
@@ -25,14 +25,14 @@ public class Packet {
 	}
 
 	public static String SelectAccount(int id) {
-		String msg = null;
+		String msg = "";
 		msg += "SelectAccount" + "@";
 		msg += id;
 		return msg;
 	}
 
 	public static String InputAccount(int id,int balance) {
-		String msg = null;
+		String msg = "";
 		msg +=  "InputAccount" + "@";
 		msg += id + "#";
 		msg += balance;
@@ -40,7 +40,7 @@ public class Packet {
 	}
 
 	public static String OutputAccount(int id,int balance) {
-		String msg = null;
+		String msg = "";
 		msg +=  "OutputAccount" + "@";
 		msg += id + "#";
 		msg += balance;
@@ -48,14 +48,14 @@ public class Packet {
 	}
 
 	public static String DeleteAccount(int id) {
-		String msg = null;
+		String msg = "";
 		msg +=  "DeleteAccount" + "@";
 		msg += id;
 		return msg;
 	}
 
 	public static String SelectAllAccount() {
-		String msg = null;
+		String msg = "";
 		msg +=  "SelectAllAccount" + "@";
 		return msg;
 	}
