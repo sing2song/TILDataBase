@@ -45,7 +45,7 @@ public class TcpIpMultiServer {
 
 	//1. 대기소켓(소켓생성, 바인드, 릿슨)
 	private void InitWaitSocket() throws IOException {
-		serverSocket = new ServerSocket(PORT);//14.32.18.42
+		serverSocket = new ServerSocket(PORT);// 192.168.0.14
 		System.out.println("서버시작,접속 기다림");	
 	}
 
@@ -118,8 +118,8 @@ class ServerReceiver extends Thread{
 		Iterator<String> itr = clients.keySet().iterator();
 		while(itr.hasNext()){
 			PrintWriter writer = clients.get(itr.next());
-			writer.println(msg);
-			writer.flush();
+			writer.println(msg);	//전송!!![출력버퍼에 저장]
+			writer.flush();			//[출력버퍼에 있는 정보를 밀어내는 역할]
 		}
 	}
 
