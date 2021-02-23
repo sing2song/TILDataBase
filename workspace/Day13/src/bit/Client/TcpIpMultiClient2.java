@@ -36,7 +36,7 @@ public class TcpIpMultiClient2 {
 	//데이터 전송 기능
 	public void SendMessage(String msg) {
 		try {
-			clientsender.SendMessage(msg);
+			clientsender.SendMessage(msg);//null이 생기면 객체가 만들어지지 않은것!
 		}
 		catch(Exception ex) {		
 			System.out.println("전송 오류");
@@ -59,6 +59,7 @@ class ClientSender2{
 	public void SendMessage(String msg) {		
 		writer.println(msg);			
 		writer.flush();
+		//--------msg출력--------------
 	}
 }
 
@@ -82,8 +83,8 @@ class ClientReceiver2 extends Thread{
 		 while(reader !=null){
 			 try{
 				 String msg = reader.readLine();	//1. 수신
-				 bank.RecvData(msg);				//2. 연산
-				 System.out.println(msg);			//3. 결과출력
+				 bank.RecvData(msg);				//2. 연산 - 생성자를 통해서 bank를 받아서 필드에 속하게 한 것
+				 //System.out.println(msg);			//3. 결과출력
 			 }catch(IOException e){}
 		 }
 		 try{

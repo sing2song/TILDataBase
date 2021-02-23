@@ -46,6 +46,20 @@ public class Manager {
 		return msg;		
 	}
 	
+	public String SelectAccount(int id) {
+		Account acc = accountlist.get(id);
+		
+		//패킷 생성
+		String msg =null;
+		if(acc==null) {//실패했을때
+			msg = Packet.SelectAccount_ack(id, "-", 0, false);
+		}else {//성공했을때
+			msg = Packet.SelectAccount_ack(id, acc.getName(), acc.getBalance(), true);
+		}
+		
+		return msg;
+	}
+	
 }
 
 

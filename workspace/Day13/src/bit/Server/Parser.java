@@ -22,7 +22,9 @@ public class Parser {
 			return Manager.getInstance().MakeAccount(number, name, balance);
 		}
 		else if(filter[0].equals("SelectAccount")) {
-			
+			int number = Integer.parseInt(filter[1]);
+			return Manager.getInstance().SelectAccount(number);
+
 		}
 		else if(filter[0].equals("InputAccount")) {
 			

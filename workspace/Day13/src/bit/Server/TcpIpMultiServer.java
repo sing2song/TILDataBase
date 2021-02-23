@@ -77,7 +77,7 @@ class ServerReceiver extends Thread{
 		    //Run------------------------------------------------------------
 		   while(reader!=null){
 			   String msg = reader.readLine();						//1) 데이터 수신
-			   String msg1 = Manager.getInstance().RecvData(msg);	//2) 데이터 처리를 관리모듈에게 전달!
+			   String msg1 = Manager.getInstance().RecvData(msg);	//2) 데이터 처리를 관리모듈(Manager)에게 전달!
 			   //sendToAll(msg); 									//3) 결과를 전송
 			   SendMessage(msg1);
 		   }
