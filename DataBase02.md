@@ -200,7 +200,9 @@ create table QUEUE(
 queueid int primary key auto_increment,
 personid int not null,
 busid int not null,
-date datetime default now()
+date datetime default now(),
+foreign key(personid) references person(personid),
+foreign key(busid) references bus(busid)
 );
 ```
 
