@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
 
+//
 public class TcpIpMultiServer {
 	//대기소켓에서 사용할 포트번호
 	final int PORT = 4000;	
@@ -86,12 +87,13 @@ class ServerReceiver extends Thread{
 			clients.put(name,writer);	//<------------------- 저장!
 			sendToAll(name+"들어옴");		//2) 전체 전송(1대 다 통신)
 			System.out.println("현재 접속자수"+clients.size()+"이다.");
+			System.out.println(name+"들어옴");
 			//-------------------------------------------------------
 
 			//Run----------------------------------------------------
 			while(reader!=null){
 				String msg = reader.readLine();	//1) 데이터 수신
-				//2) 데이터 처리
+				System.out.println(msg); 		//2) 데이터 처리
 				sendToAll(msg);					//3) 결과를 전송
 			}
 
@@ -101,7 +103,7 @@ class ServerReceiver extends Thread{
 			//정상적인 종료코드
 			sendToAll(name+"나갔어");	//<----------------
 			clients.remove(name);	//<----------------	[삭제!]
-			System.out.println("[클라이언트 해제] "+socket.getInetAddress()+":"+socket.getPort()+"에서 접속 종료함");
+			System.out.println("[클라이언트 해제] "+socket.getInetAddress()+":"+socket.getPort());
 			System.out.println("현재 서버접속자수: "+clients.size());
 
 			try{
