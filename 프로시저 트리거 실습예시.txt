@@ -1,0 +1,64 @@
+[프로시저 등록 코드]
+
+delimiter //
+create procedure pr1()
+begin
+select * from account;
+select * from account;
+end //
+
+delimiter ;
+
+[프로시저 사용]
+call pr1;
+--------------------------------------
+[인자 사용]
+
+delimiter //
+create procedure pr2(id INT)
+begin
+select * from account where accid=id;
+end //
+
+delimiter ;
+
+[호출]
+call pr2(111);
+
+-----------------------------------
+[트리거]
+
+트리거를 활용하기 위해서 
+Account테이블의 스키마만 복사
+새로운 테이블을 생성
+
+Create Table Account1 Like Account;
+
+---------------------------
+[트리거 생성]
+
+delimiter //
+create trigger tr1 BEFORE DELETE ON Account FOR EACH ROW
+begin
+insert into Account1 values(OLD.accid, OLD.name, OLD.balance, OLD.newtime);
+end //
+
+delimiter ;
+
+
+[트리거 실행 확인]
+Account 테이블의 삭제처리
+
+delete from account where accid = 7;
+delete from account;
+
+-- account1의 테이블 확인---!!
+
+
+
+
+
+
+
+
+
