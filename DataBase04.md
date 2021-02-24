@@ -168,9 +168,194 @@ delete from account where accid=222;
 
 # Day13의 DB내용을 프로시저로 바꿔보기
 
-## 기능
+## 기능 (AccountDB1.java)
 
 
 
+구성해둔 메서드들
 
+> MakeAccount
+
+```java
+public boolean MakeAccount(int accnum,String name, int balance) {
+		try {
+			String Insert = "insert into account(accid,name,balance) values(?,?,?);";
+			PreparedStatement sment = con.prepareStatement(Insert);
+
+			sment.setInt(1, accnum);
+			sment.setString(2, name);
+			sment.setInt(3, balance);
+			sment.close();
+			int i= sment.executeUpdate();
+			if(i>0) {
+				con.commit();
+				return true;
+			}
+			return false;
+
+		} catch (Exception e) {
+			return false;
+		}		
+	}
+```
+
+
+
+>SelectAccount
+
+```java
+public Account SelectAccount(int accnum) {
+		try {
+			String sql = "select * from account where accid = ?;";
+			PreparedStatement sment = con.prepareStatement(sql);	
+			sment.setInt(1, accnum);
+			//--------------------------------------------------------
+			ResultSet rs = sment.executeQuery();//위에서 sql을 이미 담았음!
+
+			rs.next();
+			int accid = rs.getInt(1);
+			String name = rs.getString(2);
+			int balance = rs.getInt(3);
+			Timestamp ntime = rs.getTimestamp(4);
+			sment.close();
+
+			Account acc = new Account(accid, name, balance, ntime);
+			return acc;
+		}
+		catch(Exception ex) {
+			return null;
+		}		
+	}
+```
+
+
+
+>InputAccount
+
+```java
+public boolean InputAccount(int accnum, int balance) {
+		try {
+			String sql = "update account set balance = balance + ? where accid=?;";
+			PreparedStatement sment = con.prepareStatement(sql);			
+			sment.setInt(1,  accnum);
+			sment.setInt(2,  balance);
+			int i = sment.executeUpdate();
+			sment.close();   //<===================================
+			if( i > 0) {
+				con.commit();
+				return true;
+			}	
+			return false;
+		}
+		catch(Exception ex) {
+			return false;
+		}
+	}
+```
+
+
+
+>OutputAccount
+
+```java
+public boolean OutputAccount(int accnum, int balance) {
+		try {
+			//잔액이 부족한 경우?????
+			String sql = "update account set balance = balance - ? where accid=? and balance >=?";
+			PreparedStatement sment = con.prepareStatement(sql);			
+			sment.setInt(1,  balance);
+			sment.setInt(2,  accnum);
+			sment.setInt(3,  balance);
+			int i = sment.executeUpdate();
+			sment.close();   //<===================================
+			if( i > 0) {
+				con.commit();
+				return true;
+			}	
+			return false;
+		}
+		catch(Exception ex) {
+			return false;
+		}
+	}
+```
+
+
+
+>DeleteAccount
+
+```java
+public boolean DeleteAccount(int id) {
+		try {
+			String Delete = "delete from account where accid=?;";
+			PreparedStatement sment = con.prepareStatement(Delete);
+
+			sment.setInt(1, id);
+			sment.close();
+			int i= sment.executeUpdate();
+			if(i>0) {
+				con.commit();
+				return true;
+			}
+			return false;
+
+		} catch (Exception e) {
+			return false;
+		}	
+	}
+```
+
+
+
+## 프로시저구현
+
+MakeAccount
+
+IN : 계좌번호, 이름, 입금액
+
+```mysql
+
+```
+
+
+
+SelectAccount
+
+IN : 계좌번호
+
+OUT : 이름, 입금액, 날짜
+
+```mysql
+
+```
+
+
+
+InputAccount
+
+IN : 계좌번호, 입금액
+
+```mysql
+
+```
+
+
+
+OutputAccount
+
+IN : 계좌번호, 출금액
+
+```mysql
+
+```
+
+
+
+DeleteAccount
+
+IN : 계좌번호
+
+```mysql
+
+```
 
