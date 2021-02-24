@@ -1,11 +1,14 @@
-package bit.Server;
+package bit.Procedure;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AccountDB1 {
@@ -33,15 +36,16 @@ public class AccountDB1 {
 	//기능
 	public boolean MakeAccount(int accnum,String name, int balance) {
 		try {
-			String Insert = "insert into account(accid,name,balance) values(?,?,?);";
-			PreparedStatement sment = con.prepareStatement(Insert);
+			String query = "{call MakeAccount(?,?,?)};";
+			PreparedStatement sment = con.prepareStatement(query);
 
 			sment.setInt(1, accnum);
 			sment.setString(2, name);
 			sment.setInt(3, balance);
-			
 			int i= sment.executeUpdate();
 			sment.close();
+
+
 			if(i>0) {
 				con.commit();
 				return true;
@@ -55,40 +59,40 @@ public class AccountDB1 {
 
 	public Account SelectAccount(int accnum) {
 		try {
-			String sql = "select * from account where accid = ?;";
-			PreparedStatement sment = con.prepareStatement(sql);	
+			String sql = "{call SelectAccount(?,?,?,?)};";
+			CallableStatement sment = con.prepareCall(sql);	
 			sment.setInt(1, accnum);
+			sment.registerOutParameter(2, Types.VARCHAR);
+			sment.registerOutParameter(3,  Types.INTEGER);
+			sment.registerOutParameter(4,  Types.TIMESTAMP);
 			//--------------------------------------------------------
-			ResultSet rs = sment.executeQuery();//위에서 sql을 이미 담았음!
+			sment.execute();			
+	
+			String name = sment.getString(2);
+			int balance = sment.getInt(3);
+			Timestamp ntime = sment.getTimestamp(4, Calendar.getInstance());
 
-			rs.next();
-			int accid = rs.getInt(1);
-			String name = rs.getString(2);
-			int balance = rs.getInt(3);
-			Timestamp ntime = rs.getTimestamp(4);
 			sment.close();
-
-			Account acc = new Account(accid, name, balance, ntime);
+			
+			Account acc = new Account(accnum, name, balance, ntime);
 			return acc;
 		}
 		catch(Exception ex) {
+			System.out.println("예외 발생");
 			return null;
 		}		
 	}
 
+
 	public boolean InputAccount(int accnum, int balance) {
 		try {
-			String sql = "update account set balance = balance + ? where accid=?;";
-			PreparedStatement sment = con.prepareStatement(sql);			
+			String sql = "{call InputAccount(?,?)};";
+			CallableStatement sment = con.prepareCall(sql);	
 			sment.setInt(1,  accnum);
 			sment.setInt(2,  balance);
-			int i = sment.executeUpdate();
+			sment.execute();
 			sment.close();   //<===================================
-			if( i > 0) {
-				con.commit();
-				return true;
-			}	
-			return false;
+			return true;
 		}
 		catch(Exception ex) {
 			return false;
@@ -97,43 +101,34 @@ public class AccountDB1 {
 
 	public boolean OutputAccount(int accnum, int balance) {
 		try {
-			//잔액이 부족한 경우?????
-			String sql = "update account set balance = balance - ? where accid=? and balance >=?";
-			PreparedStatement sment = con.prepareStatement(sql);			
-			sment.setInt(1,  balance);
-			sment.setInt(2,  accnum);
-			sment.setInt(3,  balance);
-			int i = sment.executeUpdate();
-			sment.close();   //<===================================
-			if( i > 0) {
-				con.commit();
-				return true;
-			}	
-			return false;
+			String sql = "{call OutputAccount(?,?)};";
+			CallableStatement sment = con.prepareCall(sql);			
+			sment.setInt(1,  accnum);
+			sment.setInt(2,  balance);
+			sment.execute();
+			sment.close();   //<===================================			
+			return true;
 		}
 		catch(Exception ex) {
 			return false;
 		}
 	}
 
-	public boolean DeleteAccount(int id) {
+
+	public boolean DeleteAccount(int accnum) {		//3
 		try {
-			String Delete = "delete from account where accid=?;";
-			PreparedStatement sment = con.prepareStatement(Delete);
-
-			sment.setInt(1, id);
-			sment.close();
-			int i= sment.executeUpdate();
-			if(i>0) {
-				con.commit();
-				return true;
-			}
+			String sql = "{call DeleteAccount(?)};";
+			CallableStatement sment = con.prepareCall(sql);			
+			sment.setInt(1,  accnum);
+			sment.execute();
+			sment.close();   //<===================================			
+			return true;
+		}
+		catch(Exception ex) {
 			return false;
-
-		} catch (Exception e) {
-			return false;
-		}	
+		}
 	}
+
 
 
 	public ArrayList<Account> selectAllAccount() {
@@ -152,7 +147,7 @@ public class AccountDB1 {
 				acclist.add(new Account(accid,name,balance,ntime));
 			}
 			sment.close();
-			
+
 			return acclist;
 		}
 		catch(Exception ex) {

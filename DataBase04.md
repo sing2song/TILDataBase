@@ -185,8 +185,9 @@ public boolean MakeAccount(int accnum,String name, int balance) {
 			sment.setInt(1, accnum);
 			sment.setString(2, name);
 			sment.setInt(3, balance);
-			sment.close();
+			
 			int i= sment.executeUpdate();
+            sment.close();
 			if(i>0) {
 				con.commit();
 				return true;
@@ -314,6 +315,13 @@ MakeAccount
 IN : 계좌번호, 이름, 입금액
 
 ```mysql
+delimiter //
+create procedure MakeAccount(IN id INT, IN name VARCHAR(30), IN bal INT)
+begin
+insert into account(accid,name,balance) values(id,name,bal);
+end //
+
+delimiter ;
 
 ```
 
@@ -326,6 +334,13 @@ IN : 계좌번호
 OUT : 이름, 입금액, 날짜
 
 ```mysql
+delimiter //
+create procedure SelectAccount(IN  id INT, OUT retname varchar(20), OUT retbalance int, OUT  retnewtime timestamp)
+begin
+select name, balance, newtime into retname, retbalance, retnewtime from account where accid = id;
+end //
+delimiter ;
+
 
 ```
 
@@ -336,6 +351,12 @@ InputAccount
 IN : 계좌번호, 입금액
 
 ```mysql
+delimiter //
+create procedure InputAccount(id int, money int)
+begin
+update account set balance = balance + money where accid = id;
+end //
+delimiter ;
 
 ```
 
@@ -346,6 +367,12 @@ OutputAccount
 IN : 계좌번호, 출금액
 
 ```mysql
+delimiter //
+create procedure OutputAccount(id int, money int)
+begin
+update account set balance = balance - money where accid = id and balance >= money;
+end //
+delimiter ;
 
 ```
 
@@ -356,6 +383,80 @@ DeleteAccount
 IN : 계좌번호
 
 ```mysql
+delimiter //
+create procedure DeleteAccount(id int)
+begin
+delete from account where accid = id;
+end //
+delimiter ;
+
+```
+
+
+
+## java에서
+
+bit.procedure 패키지를 만들어서 안에 Account/AccountDB1/Start 클래스를 만들어준다
+
+MakeAccount메서드부터 **프로시저를 이용할 수 있게** 수정해준다!
+
+쿼리문만 수정해줬다
+
+```java
+public boolean MakeAccount(int accnum,String name, int balance) {
+		try {
+			String query = "{call MakeAccount(?,?,?)};";
+			PreparedStatement sment = con.prepareStatement(query);
+
+			sment.setInt(1, accnum);
+			sment.setString(2, name);
+			sment.setInt(3, balance);
+			int i= sment.executeUpdate();
+			sment.close();
+
+
+			if(i>0) {
+				con.commit();
+				return true;
+			}
+			return false;
+
+		} catch (Exception e) {
+			return false;
+		}		
+	}
+```
+
+
+
+PreparedStatement에서 CallableStatment로 바꿔보자
+
+```java
+public Account SelectAccount(int accnum) {
+		try {
+			String sql = "{call SelectAccount(?,?,?,?)};";
+			CallableStatement sment = con.prepareCall(sql);	
+			sment.setInt(1, accnum);
+			sment.registerOutParameter(2, Types.VARCHAR);
+			sment.registerOutParameter(3,  Types.INTEGER);
+			sment.registerOutParameter(4,  Types.TIMESTAMP);
+			//--------------------------------------------------------
+			sment.execute();			
+	
+			String name = sment.getString(2);
+			int balance = sment.getInt(3);
+			Timestamp ntime = sment.getTimestamp(4);
+			
+			sment.close();
+			
+			Account acc = new Account(accnum, name, balance, ntime);
+			return acc;
+		}
+		catch(Exception ex) {
+			System.out.println("예외 발생");
+			return null;
+		}		
+	}
 
 ```
 
