@@ -15,13 +15,17 @@ public class Manager {
 	}
 	//---------------------------------------------------------------
 	
+	//통신 & 데이터베이스
 	private TcpIpMultiServer server = new TcpIpMultiServer(); //<===================
-	
-	//계좌번호, 계좌
-	private HashMap<Integer, Account> accountlist = new HashMap<Integer, Account>();
-	
+	private AccountDB1 db 			= new AccountDB1();	
+		
+	//DB와 Network을 연동!
 	public void Run() {				//<=================================
-		server.Run();
+		if(db.Run() == false) {
+			System.out.println("서버 종료");
+			System.exit(0);  //강제 종료함수
+		}
+		server.Run();	
 	}
 	
 	//통신모듈에서 전달 ---> 파서에게 전달
@@ -37,7 +41,7 @@ public class Manager {
 		Account acc = new Account(id, name, balance);
 		System.out.println("[수신메시지]");		//<============ test코드------
 		acc.Print();							//<============ test코드------
-		if( accountlist.put(acc.getAccid(), acc) == null)
+		if( db.MakeAccount(id, name, balance) == true)
 			msg = Packet.MakeAccount_ack(id, true);
 		else
 			msg = Packet.MakeAccount_ack(id, false);
@@ -45,7 +49,21 @@ public class Manager {
 		//클라이언트에 전송!
 		return msg;
 	}
-	
+
+	public String SelectAccount(int id) {
+		Account acc = db.SelectAccount(id);
+		
+		//패킷 생성
+		String msg = null;
+		if(acc == null) {
+			msg = Packet.SelectAccount_ack(id, "-", 0, "-", "-", false);
+		}
+		else {
+			msg = Packet.SelectAccount_ack(
+					id, acc.getName(), acc.getBalance(), acc.GetDate(), acc.GetTime(), true);
+		}
+		return msg;
+	}
 }
 
 

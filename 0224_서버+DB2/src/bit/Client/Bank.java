@@ -106,6 +106,19 @@ public class Bank {
 		else
 			System.out.println(number + "계좌 생성 실패");
 	}
+
+	public void SelectAccount_Ack(String result, int number, String name, int balance, String date, String time) {
+		if(result.equals("F")) {
+			System.out.println(number + "계좌 번호는 없는 번호입니다");
+			return;
+		}
+		
+		System.out.println("계좌번호 : " + number);
+		System.out.println("이름 : " + name);
+		System.out.println("잔액 : " + balance);
+		System.out.println("일자 : " + date);
+		System.out.println("시간 : " + time);
+	}
 }
 
 

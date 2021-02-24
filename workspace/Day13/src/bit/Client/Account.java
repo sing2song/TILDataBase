@@ -1,6 +1,7 @@
-package bit.Server;
+package bit.Client;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class Account {
@@ -22,9 +23,16 @@ public class Account {
 	
 	public Account(int accid, String name, int balance,Timestamp dt) {
 		this(accid,name,balance);
-		this.newtime.setTime(dt);	// Calendar <---- Timestamp
+		LocalDateTime lt =dt.toLocalDateTime();
+		//this.newtime.setTime(dt);	// Calendar <---- Timestamp
+		newtime.set(lt.getYear(),lt.getMonthValue(),lt.getDayOfMonth(),
+				lt.getHour(),lt.getMinute(),lt.getSecond());
 	} 
 
+	public Account(int accid, String name,int balance, String date,String time ) {
+		this(accid,name,balance);
+		newtime=Calendar.getInstance();
+	}
 	public int getAccid() {
 		return accid;
 	}

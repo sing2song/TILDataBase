@@ -25,7 +25,7 @@ public class TcpIpMultiServer {
 	
 	public void Run() {
 		try{
-			InitWaitSocket();
+			InitWaitSocket(); 
 		  
 			while(true){
 				//클라이언트 접속 & 통신소켓 생성
@@ -76,7 +76,7 @@ class ServerReceiver extends Thread{
 		try{
 		    //Run------------------------------------------------------------
 		   while(reader!=null){
-			   String msg = reader.readLine();						//1) 데이터 수신
+			   String msg = reader.readLine();						//1) 데이터 수신			   
 			   String msg1 = Manager.getInstance().RecvData(msg);	//2) 데이터 처리를 관리모듈에게 전달!
 			   //sendToAll(msg); 									//3) 결과를 전송
 			   SendMessage(msg1);
@@ -90,7 +90,7 @@ class ServerReceiver extends Thread{
 		   try{				
 			   socket.close();
 		   }catch(Exception e){e.printStackTrace();}
-		}		
+		}
 	}
 	
 	//[ACK메시지 전송(메니저에 의해 호출)]

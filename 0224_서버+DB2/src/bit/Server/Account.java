@@ -1,5 +1,6 @@
 package bit.Server;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 public class Account {
@@ -18,7 +19,12 @@ public class Account {
 		this.setBalance(balance);
 		newtime = Calendar.getInstance();
 	}
-
+	
+	public Account(int accid, String name, int balance, Timestamp dt) {
+		this(accid, name, balance);
+		this.newtime.setTime(dt); // Calendar <---- Timestamp
+	}
+	
 	public int getAccid() {
 		return accid;
 	}

@@ -1,6 +1,8 @@
 //bank.java
 package bit.Client;
 
+import java.util.ArrayList;
+
 public class Bank {
 	//통신 모듈
 	//client의 Run메서드 호출시 서버 접속 연결!
@@ -107,7 +109,7 @@ public class Bank {
 
 	}
 
-	public void SelectAccount_Ack(String result, int number, String name, int balance) {
+	public void SelectAccount_Ack(String result, int number, String name, int balance,String date, String time) {
 		if(result.equals("F")) {
 			System.out.println(number + "계좌 번호는 없는 번호입니다");
 			return;
@@ -116,8 +118,32 @@ public class Bank {
 		System.out.println("계좌번호 : " + number);
 		System.out.println("이름 : " + name);
 		System.out.println("잔액 : " + balance);
+		System.out.println("날짜 : " + date);
+		System.out.println("시간 : " + time);
 	}
 
+	public void InputAccount_Ack(String result, int number, int money) {
+		if(result.equals("S"))
+			System.out.println(number + "입금 성공");
+		else
+			System.out.println(number + "입금 실패");
+	}
+	
+	public void OutputAccount_Ack(String result, int number, int money) {
+		if(result.equals("S"))
+			System.out.println(number + "출금 성공");
+		else
+			System.out.println(number + "출금 실패");
+	}
+
+	public void SelectALLAccount_Ack(String result, ArrayList<Account> acclist) {
+		
+		System.out.println("저장개수 : "+acclist.size());
+		for(Account acc : acclist)
+			acc.Print();
+	}
+
+	
 
 }
 

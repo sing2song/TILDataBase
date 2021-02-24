@@ -36,7 +36,7 @@ public class Start {
 		/*
 		//TcpIpMultiServer server = new TcpIpMultiServer();
 		//server.Run();
-		//데이터베이스
+		 
 		try {
 		AccountDB1 db = new AccountDB1();
 		}

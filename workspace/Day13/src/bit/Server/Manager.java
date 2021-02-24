@@ -1,5 +1,6 @@
 package bit.Server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager {
@@ -8,58 +9,111 @@ public class Manager {
 	private Manager() { 	}		
 	//자신의 static 객체 생성
 	private static Manager Singleton = new Manager();
-	
+
 	//내부적으로 생성된 자신의 객체를 외부에 노출 메서드
 	public static Manager getInstance() {
 		return Singleton;
 	}
 	//---------------------------------------------------------------
-	
+
+	//통신&데이터베이스
 	private TcpIpMultiServer server = new TcpIpMultiServer(); //<===================
-	
-	//계좌번호, 계좌
-	private HashMap<Integer, Account> accountlist = new HashMap<Integer, Account>();
-	
+	private AccountDB1 db = new AccountDB1();
+
+
+	//DB와 Network을 연동!
 	public void Run() {				//<=================================
-		server.Run();
+		if(db.Run()==false) {
+			System.out.println("서버 종료");
+			System.exit(0);		//강제 종료함수
+		}
+		server.Run();			
 	}
-	
+
 	//통신모듈에서 전달 ---> 파서에게 전달
 	public String RecvData(String msg) {
 		return Parser.RecvData(msg);
 	}
-	
+
 	//파서에서 분석된 결과에 따라 해당 함수를 호출 -----------------------------------
 	public String MakeAccount(int id, String name, int balance) {
 		//저장!
 		String msg = null;
-		
+
 		Account acc = new Account(id, name, balance);
-		System.out.println("[수신메시지]");		//<============ test코드------
+		System.out.println("[수신메시지]");			//<============ test코드------
 		acc.Print();							//<============ test코드------
-		if( accountlist.put(acc.getAccid(), acc) == null)
-			msg = Packet.MakeAccount_ack(id, false);
-		else
+		if( db.MakeAccount(id,name,balance)==true)
 			msg = Packet.MakeAccount_ack(id, true);
-		
+		else
+			msg = Packet.MakeAccount_ack(id, false);
+
 		//클라이언트에 전송!
 		return msg;		
 	}
-	
+
 	public String SelectAccount(int id) {
-		Account acc = accountlist.get(id);
-		
+		Account acc = db.SelectAccount(id);
+
 		//패킷 생성
 		String msg =null;
 		if(acc==null) {//실패했을때
-			msg = Packet.SelectAccount_ack(id, "-", 0, false);
+			msg = Packet.SelectAccount_ack(id, "-", 0,"-","-", false);
 		}else {//성공했을때
-			msg = Packet.SelectAccount_ack(id, acc.getName(), acc.getBalance(), true);
+			msg = Packet.SelectAccount_ack(
+					id, acc.getName(), acc.getBalance(), acc.GetDate(),acc.GetTime(),true);
 		}
-		
+
+		return msg;
+	}
+
+	public String InputAccount(int id, int money) {
+		String msg = null;
+		if( db.InputAccount(id, money)) {
+			msg = Packet.InputAccount_ack(id, money,true);
+		}
+		else {
+			msg = Packet.InputAccount_ack(id, money,false);
+		}
 		return msg;
 	}
 	
+	public String OutputAccount(int id, int money) {
+		String msg = null;
+		if(db.OutputAccount(id, money)){
+			msg = Packet.OutputAccount_ack(id,money, true);
+		}
+		else {
+			msg = Packet.OutputAccount_ack(id,money, false);
+		}
+		return msg;
+	}
+
+	public String DeleteAccount(int id) {
+		String msg = null;
+		if(db.DeleteAccount(id)){
+			msg = Packet.DeleteAccount_ack(id, true);
+		}
+		else {
+			msg = Packet.DeleteAccount_ack(id, false);
+		}
+		return msg;
+	}
+
+	public String SelectAllAccount() {
+		String msg = null;
+		ArrayList<Account>	acclist = db.selectAllAccount();
+		
+		if(acclist!=null){
+			msg = Packet.SelectAllAccount_ack(acclist, true);
+		}
+		else {
+			msg = Packet.SelectAllAccount_ack(acclist, false);
+		}
+		return msg;		
+	}
+
+
 }
 
 

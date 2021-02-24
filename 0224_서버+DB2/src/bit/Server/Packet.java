@@ -9,8 +9,8 @@ package bit.Server;
    "SelectAllAccount@"			//없음.
    
 [server -> Client]
-	"MakeAccount_ack@111#S"
-	"MakeAccount_ack@111#F"
+	"MakeAccount_ack@111#S"   			"MakeAccount_ack@111#F"
+	"SelectAccount_ack@S#111#ccm#1000#날짜#시간"	"SelectAccount_ack@F#111#-#0#-#-"
 */
 public class Packet {
 	public static String MakeAccount_ack(int id, boolean b) {
@@ -24,5 +24,32 @@ public class Packet {
 		return msg;
 	}
 
-
+	public static String SelectAccount_ack(int id, String name, int balance, String date, String time, boolean b) {
+		String msg = "";
+		msg +=  "SelectAccount_ack" + "@";
+		if(b)	msg += "S" + "#";
+		else	msg += "F" + "#";
+		msg += id + "#";
+		msg += name + "#";
+		msg += balance + "#";
+		msg += date + "#";
+		msg += time;
+		
+		return msg;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
