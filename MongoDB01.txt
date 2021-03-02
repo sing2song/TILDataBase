@@ -1,0 +1,313 @@
+AJAX->Front-end Framework
+
+Database -> CRUD(create, retrieve, Update, Delete)
+
+DBMS-> 테이블
+NoSQL -> JSON
+  MongoDB, Cassandra, Redis
+  Document key-value
+...
+
+배열 -> 인덱스  a[0], a[1]
+  Array/List
+  get/set 
+
+키/밸류 -> 전문화
+{"name":"seokjae ha", "age":100}
+  Map/Dictionary
+  put/get
+
+
+자료구조
+CRUD 
+  CUD(write), R(read)
+
+Read에 최적화 -> RDBMS 
+  Binary Search/B-tree -> index
+  빠른 검색을 위한 보조자료구조  
+
+Write에 최적화 -> NoSQL
+  컬럼기반 저장 테이블
+  cf. 데이터 사용량
+
+RDBMS <-> NoSQL 
+
+MongoDB(JSON형식)
+
+정형(structured data) - RDBMS/XML
+  스키마(데이터형식)
+  주민번호(6-7)
+반정형(semi-structured data)
+  스키마리스(약간의 자유도)
+  NoSQL(JSON)
+비정형(un-structured data)
+  동영상, 텍스트(웹페이지)
+  엘라스틱서치(검색엔진)
+
+
+
+자바 - OOP(클래스/오브젝트)
+
+전체 클래스 하나로 된 프로그램
+
+
+
+MySQL - PK/FK(인덱스기본)
+Oracle - PK/UK(인덱스기본)
+
+employees
+  employees_id(PK/*)
+  first_name
+  last_name
+  email
+  address
+
+select * from employees where employees_id=10;
+
+select * from employees where last_name='ha' and first_name='seokjae';
+
+create index sample_index on employees(first_name, last_name);
+
+select * from employees where last_name='ha' and first_name='seokjae';
+
+Self-balanced tree(자료구조)
+ AVL tree/Red-tree tree/2-3-4 tree
+
+해시-> 한 번에 검색가능, 많아지면 충돌현상
+B-tree -> 여러 번 비교, 많아져도 문제없슴
+
+B-tree -> 데이터가 많아지면 느려짐(비교회수가 증가)
+
+트랜잭션의 4대특성
+A(원자성) - commit/rollback
+C(일관성)
+I(격리성)
+D(내구성)
+
+Key/value
+
+value의종류 -> 문자열/숫자/...
+
+Document Key/value         
+ file(파일)
+
+JSON(Javascript Object Notation)
+
+JSON - Javascript
+cf. MongoDB - Javascript
+
+Key/Value
+
+{ "name": "Seokjae Ha",
+  "email": "sjha72@gmail.com",
+  "hobby":["climbing","fishing","reading books"],
+  "address": 
+   {"nation":"korea", "city":"seoul", "province":"seocho" }
+}
+
+[ ](bracket) : array
+{ }(brace)   : object
+cf. < >(angle bracket)
+    ~(tilde)
+
+nesting(중첩)이 가능
+ 오브젝트, 배열 
+
+아무리 복잡한 구조라도 표현이 가능 -> 복잡
+
+JSON(웹연동) vs. YAML(설정)
+
+VSCode -> JSON으로 설정
+Spring Framework(XML -> JSON/YAML)
+
+OOP(Object-oriented) vs. Function-oriented 
+ oriented-> based
+
+cf. TCP(connection-oriented) vs. UDP(connection-less)
+cf. Javascript -> OOP(x) / object-based(o)
+    Typescript(OOP기반의 자바스크립트)
+
+Stream -> 1차원 자료구조
+ inputStream/outputStream
+
+1차원 array vs. stream(몇 개인지 정의를 안하는 배열)
+
+int a[10]; // a[0],...,a[9]
+
+stream.open()
+read()/write()
+.close()
+
+TABLE-> stream으로 변환 -> file/network
+1. serialization(직렬화)/de-serialization(역직렬화)
+2. marshaling / unmarshalling
+
+북한(반군:이적단체)
+   국가인가/아닌가?
+UN동시가입(북한 국가로 인정)  
+
+일관성(Consistency)
+ 헌법상 - 반국가단체-> 변경
+ UN    - 국가로 인정
+
+헌법이 위인가? FTA이 위인가?
+
+Database vs. Datastore
+
+programming - database
+logic(Java/Javascript) - Array/Map
+                         File/DB/
+database(logic+data)
+  stored procedure / trigger  -> 함수
+  cf. Oracle PL/SQL
+
+오라클 -> 10억
+  MS/Oracle - CPU당 과금
+
+고성능 저코어수/저성능 고코어수 
+
+AMD Threadripper 3990x/EPYC 64core/128thread
+
+32core/64thread 2개 
+
+Scale-Up vs. Scale-out(저렴)
+
+DBMS(Oracle/Mysql/postgres/mongo/redis/...)
+
+비지니스로직이 외부(Java)
+  Java에서 DBMS에서 제공되는 기능이 모두 가능한가?
+  Stored procedure
+
+JDBC Statement/PreparedStatement/CallableStatement
+   PreparedStatement - Stored procedure/trigger
+
+Dynamic SQL vs. Static SQL 
+SQL인터프리터  프리컴파일러(동일한 SQL패턴이 계속 반복실행)
+
+Statement
+"insert into xxx values ("+xxx+","+"yyy);";
+ -> SQL injection 가능
+
+PreparedStatement
+"insert into xxx values (?,?);";
+ -> SQL injdection 불가능
+setInt(1,xxx);
+setString(2, yyyy);
+
+
+
+sample number(int)
+name   varchar(20) - mysql(글자수), oracle(바이트수)
+                     cf. utf8(영어1바이트/한글3바이트)
+
+sample - number(11,2) 
+name   - 최대 20자, 최소 null
+
+레코드의 종료/컬럼의 종료 표시 cf. a|b|c|d|e||   
+   레코드의 시작위치를 별로의 지도처럼 기록
+   cf. 5번 째 레코드를 읽어라 
+
+쓰기속도가 떨어진다
+
+컬럼기반저장-읽기/쓰기속도(병렬처리가능)
+
+147.46.114.112 - IPv4 4바이트(32비트)
+
+varchar는 몇 자까지? / varchar2는 몇 자까지?
+
+BLOB/CLOB(TEXT)
+Binary Large Object / Character Large Object
+
+이미지/동영상 -> DBMS에 저장
+
+데이터베이스 복제 
+블럭체인(노드) - 5만 개의(메인넷)
+10분마다 블럭(거래)생성 
+
+몇 초 안에 가능한가? 이더리움 12.5초 안에 모두 반영
+
+5초 정도 지난 상황(누구는 1, 누구는 2 -> 합의/다수결)
+
+일관성의 의미
+  블럭체인은 일관성이 없슴-> 합의 O
+  데이터베이스 일관성이 있슴 -> 합의 X 
+           
+
+
+데이터베이스 전체
+-------------
+RDBMS
+  VLDB(샤딩/파티셔닝/복제)
+NoSQL
+Bigdata
+Elasticsearch
+
+SQL / Non-SQL interface
+
+SQL on NoSQL
+  SQL on Cassandra(CQL:Cassandra Query Language)
+  SQL for MongoDB
+SQL on Bigdata
+  SparkSQL/Hive(Hadoop)
+  ksqlDB(SQL on kafka) 
+SQL on Elasticsearch
+
+db-engines.com
+
+mongodb.com
+
+리눅스/도커
+- 웹(apache/nginx)
+- 오라클/mysql
+- mongo
+- 자바
+
+hub.docker.com
+
+Java + Spring Framework
+
+Python + pip + numpy/matplotlib/pandas
+   + tensorflow/keras + Jupyter Notebook
+
+CUDA+cuDNN
+
+mysql-server / mysql-client
+mongod(server) / mongo(client)
+
+cf. daemon(server)
+ ftpd/apached/httpd/sshd 
+
+GUI vs. CLI(Command-line interface)
+
+$ mysql -uroot -p
+
+mysql DBMS(Database Management System)
+- Database(여러 개의 테이블을 묶어서 관리)
+
+mysql> show databases;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
