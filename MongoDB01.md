@@ -160,15 +160,38 @@ D(내구성)
 
 ## JSON
 
-중첩(nesting) 이 가능. 오브젝트, 배열.
+- 외래키 개념이 존재하지 않는다. 
+
+- 중첩(nesting) 이 가능. 오브젝트, 배열.
 
 ex)
 
-{ "name" : "songwon",
+{ 
+
+"name" : "songwon",
 
 "age" : 25,
 
-"hobby":["painting","swimming"]
+"hobby": ["painting","swimming"]
 
 }
 
+
+
+- 웹쪽에서는 JSON을 사용하고 설정, 셋팅에는 **YAML(야무)**를 주로 사용한다.
+
+- File, Stream -> 1차원 자료구조
+
+
+
+OOP(Object - oriented Program) : 객체 지향 프로그램 
+
+vs
+
+Function - oriented : 함수 지향 프로그램. ex. C계열
+
+
+
+javascript는 oop가 아니고 object-based이다.
+
+TCP (connection -oriented) vs UDP(connection-less)
