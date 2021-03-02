@@ -28,6 +28,24 @@ ex) MongoDB
 
 
 
+>장점
+
+데이터 **중복 제거**
+
+권한이 없는 접근 제한
+
+지속적인 저장 공간과 질의 처리 공간 제공
+
+백업과 복구 지원
+
+여러 사용자 인터페이스 제공
+
+데이터 사이에 다양한 관계를 효율적으로 표현
+
+데이터 **무결성** 보장
+
+
+
 ### index
 
 배열은 인덱스를 사용.
@@ -182,6 +200,8 @@ ex)
 
 - File, Stream -> 1차원 자료구조
 
+- disk를 많이 차지않다.
+
 
 
 OOP(Object - oriented Program) : 객체 지향 프로그램 
@@ -195,3 +215,10 @@ Function - oriented : 함수 지향 프로그램. ex. C계열
 javascript는 oop가 아니고 object-based이다.
 
 TCP (connection -oriented) vs UDP(connection-less)
+
+
+
+
+
+
+
