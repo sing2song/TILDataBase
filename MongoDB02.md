@@ -453,7 +453,7 @@ db.articles.find( { $where: "this.comments.length == 0" } );
 
 
 
-**$eleMatch**
+**$elemMatch**
 
 $elemMatch 연산자는 Embedded Documents 배열을 쿼리할때 사용됩니다. 저희 mock-up data 에서는 comments 가 Embedded Document에 속합니다.
 
@@ -485,5 +485,57 @@ Document의 배열이아니라 그냥 배열일 시에는 다음과 같이 Query
 
 ```mysql
 db.users.find({ "language": "korean"});
+```
+
+
+
+
+
+## Projection
+
+find() 메소드의 두번째 parameter 인 projection
+
+결과값에서 보여질 field를 정하는 것.
+
+```mysql
+#예제12: article의 title과 content 만 조회
+
+db.articles.find( { } , { "_id": false, "title": true, "content": true } );
+```
+
+
+
+**$slice연산자**
+
+$slice 연산자는 Embedded Document 배열을 읽을때 limit 설정을 합니다.
+
+```mysql
+#예제13: title 값이 article03 인 Document 에서 덧글은 하나만 보이게 출력
+
+db.articles.find( { "title": "article03" }, { comments: { $slice: 1 } } );
+```
+
+
+
+$elemMatch연산자
+
+```mysql
+#예제14:  comments 중 “Charlie” 가 작성한 덧글이 있는 Document 중 제목, 그리고 Charlie의 덧글만 조회
+
+db.articles.find(
+     {
+         "comments": {
+             $elemMatch: { "name": "Charlie" }
+         }
+     },
+     {
+         "title": true,
+         "comments": {
+             $elemMatch: { "name": "Charlie" }
+         },
+         "comments.name": true,
+         "comments.message": true
+     }
+);
 ```
 
