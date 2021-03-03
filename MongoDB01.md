@@ -8,6 +8,8 @@ javascript에서도 사용한다.
 
 <> (angle bracket) , ~ (tilde), 
 
+MongoDB는 `database`와 `collection`이 없어도 `document`를 먼저 생성해서 데이터를 넣을 수가 있다.(=>절차가 필요없다)
+
 
 
 ## 데이터베이스 
@@ -260,9 +262,7 @@ https://www.mongodb.com/try/download/community
 1. 위에 들어가서 다운받기
 2. 다른거 바꿀거없이 next 해서 설치하기
 
-
-
-CMD 창을 열어서 디렉토리로 들어가 `mongod`를 실행하면 서버가 실행됩니다.
+3. CMD 창을 열어서 디렉토리로 들어가 `mongod`를 실행하면 서버가 실행됩니다.
 
 ```bash
 Microsoft Windows [Version 10.0.18363.1379]
