@@ -307,13 +307,84 @@ cursor() : 현재 작업 레코드
 
 
 
+## 5편
+
+update() : record 전체를 통으로 바꿀수가 있다. 보통은 데이터만 바꾸는데 이례적이다.
+
+$set으로 설정을 바꾸고
+
+$unset으로 설정을 지울 수도 있다.
+
+```mysql
+db.people.update( { name: "Abet" }, { $set: { age: 20 } } );
+db.people.update( { name: "Betty" }, { "name": "Betty 2nd", age: 1 });
+
+db.people.update( { name: "David" }, { $unset: { score: 1 } } );
+```
 
 
 
+> 예제
+
+**예제5.** 여러 document의 특정 field를 수정하기
+
+**예제6-1.** 배열 에 값 추가하기
+
+**예제6-2.** 배열에 값 여러개 추가하기 + 오름차순으로 정렬하기
+
+```mysql
+#age가 20 보다 낮거나 같은 document의 score를 10으로 설정
+db.people.update(
+ { age: { $lte: 20 } },
+ { $set: { score: 10 } },
+ { multi: true }
+);
+
+#Charlie document의 skills 배열에 "angularjs" 추가
+db.people.update(
+{ name: "Charlie" },
+{ $push: { skills: "angularjs" } }
+);
+
+
+#Charlie document의 skills에 "c++" 와 "java" 를 추가하고 알파벳순으로 정렬
+db.people.update(
+{ name: "Charlie" },
+	{ $push: {
+	 skills: {
+         	$each: [ "c++", "java" ],
+        	$sort: 1
+     }
+   }
+ }
+);
+```
 
 
 
+**예제7-1.** 배열에 값 제거하기 
 
+**예제7-2.** 배열에서 값 여러개 제거하기
+
+```mysql
+#Charlie document에서 skills 값의 mongodb 제거
+db.people.update(
+{ name: "Charlie" },
+{ $pull: { skills: "mongodb" } }
+ );
+ 
+#Charlie document의 skills에 "c++" 와 "java" 를 추가하고 알파벳순으로 정렬
+db.people.update(
+{ name: "Charlie" },
+{ $push: {
+ skills: {
+         $each: [ "c++", "java" ],
+         $sort: 1
+     }
+  }
+ }
+);
+```
 
 
 
