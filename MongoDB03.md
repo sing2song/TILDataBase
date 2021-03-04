@@ -1,5 +1,7 @@
 # 짜투리
 
+갤S9에 캡쳐해뒀음
+
 
 
 WSL = windows subsystem for linux
@@ -167,7 +169,7 @@ https://launchpad.net/test-db
 
 https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2
 
-2. 위의 두번째 다운로드 링크주소이다.
+2. 위의 두번째 다운로드 링크주소이다.(우클릭 - 링크주소복사 한것)
 
 
 
@@ -264,6 +266,54 @@ root@8ceef69aecb1:/# mongo
 실행하고 나서 show dbs를 해보면 어제 docker에서 확인했던것과 같이 뜨는 것을 확인할 수 있다!
 
 ![image-20210304141442894](md-images/image-20210304141442894.png)
+
+
+
+
+
+# 짜투리
+
+RESTful URL는 다음과 같다.
+
+https://velopert.com/436
+
+http get(받기) / post(보내기) GET url (or POST)
+
+GET	https://velopert.com?id=436	
+
+POST	https://velopert.com
+
+
+
+
+
+http rest(CRUD) 메서드
+
+-> put/get/post/delete
+
+
+
+# 예제
+
+https://velopert.com/516
+
+
+
+pagenation(페이지 단위로 분할 출력)
+
+skip()과 limit()으로 분할출력이 가능하다
+
+cursor() : 현재 작업 레코드
+
+
+
+
+
+
+
+
+
+
 
 
 
