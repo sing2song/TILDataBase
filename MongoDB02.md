@@ -189,7 +189,7 @@ transacion Isolation level : 트랙잭션 격리성레벨. 트랜잭션 처리 �
 
 
 
-## 실행
+# 실행 및 예제들
 
 MongoDB, MySQL과 같은 것의 실행속도를 확인할려면 데이터베이스에선 `explain`을 적으면 속도를 볼 수 있다.
 
@@ -519,6 +519,27 @@ db.articles.find( { "title": "article03" }, { comments: { $slice: 1 } } );
 
 $elemMatch연산자
 
+예제11번에서 “ comments 중 “Charlie” 가 작성한 덧글이 있는 Document 조회 ” 를 했을때, 게시물 제목과 Charlie의 덧글부분만 읽고싶을땐 어떻게할까요?
+
+```mysql
+db.articles.find(
+    {
+        "comments": {
+            $elemMatch: { "name": "Charlie" }
+        }
+    },
+    {
+        "title": true,
+        "comments.name": true,
+        "comments.message": true
+    }
+)
+```
+
+- 위와 같이 출력하면 Charlie와 Delta가 쓴 코멘트까지 모두 출력된다! 아래와 같이 수정!
+
+
+
 ```mysql
 #예제14:  comments 중 “Charlie” 가 작성한 덧글이 있는 Document 중 제목, 그리고 Charlie의 덧글만 조회
 
@@ -533,9 +554,26 @@ db.articles.find(
          "comments": {
              $elemMatch: { "name": "Charlie" }
          },
-         "comments.name": true,
-         "comments.message": true
      }
 );
 ```
 
+
+
+
+
+# 짜투리
+
+MongoDB는 node.js와 주로 사용됨.
+
+JDBC driver / connector 는 SQL wrapper이다.
+
+code(API) - MongoDB 명령어 - MongoDB
+
+
+
+서버(JSP) - JDBC - DBMS 서버
+
+서버 - WAS/Middleware - DBMS서버
+
+​		(Oracle) BEA weblogic / Tmax Jeus
