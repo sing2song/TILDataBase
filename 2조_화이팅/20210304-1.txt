@@ -1,0 +1,60 @@
+
+JDBC - wrapper(래퍼)
+  Java - JDBC connector - MySQL
+
+  부가가치(WAS/middleware)
+
+  Spring Framework+WAS
+    WAS(middleware)
+    Framework/Engine
+
+  Front-end/Back-end(금융권)
+  Client-Server(C/S)
+
+1-tier 
+  Java(DBMS Client) - MySQL(DBMS Server)
+2-tier
+  Web Browser - WebServer/JSP(DBMS Client) - MySQL(DBMS Server)
+  cf. Web Server(Apache/Nginx)/Tomcat
+3-tier
+  Web Browser - WebServer/JSP(WAS Client) - WAS(Server/DBMS client) - MySQL(DBMS Server)
+N-tier 
+
+  부가가치(트랜잭션/장애대응, 신뢰성)
+   - DBMS에서 트랜잭션 보장가능? 한계
+   - DBMS외부에서 트랜잭션을 보장할 필요(BEA cf. EMC)
+       Middleware BEA Tuxedo(C)
+       WAS        BEA Weblogic(Java) / Tmax JEUS
+
+  Dell - EMC(Storage Server) - VMWare - Spring Framework
+    Server    
+
+  Spring Framework(API) + WAS
+
+  IT/ICT(주식시장) cf. Brics/Chindia, Bio/BT
+  FAANG / AMIG(AWS, Azure, Bluemix, Google)
+
+Spring Bean Guideline
+  쓰레드를 개별적으로 만들지 않기
+
+회사(정부) 물건구매/계약
+  조달청(나라장터)
+
+Mock-up(목업)
+
+비싼 WAS/싼 WAS
+
+Oracle(windows/unix)
+SQLServer(windows/unix)
+
+docker설치 -> 리부팅 -> wsl2(설치필요) -> 리부팅
+
+windows subsystem for linux(ubuntu bash, macos zsh)
+윈도우OS 점유 95-97%
+개발자는 윈도우개발 점유율이 엄청 낮아졌슴
+
+Hyper-V기반 WSL2
+
+
+
+

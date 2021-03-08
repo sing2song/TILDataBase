@@ -1,0 +1,178 @@
+시작-돋보기-cmd(명령프롬프트)
+
+$ docker 
+
+우분투 실행
+$ docker run -it --name=ubuntu1 ubuntu
+# 
+
+터미널에서는 복사/붙여넣기는 마우스 오른쪽버튼
+
+리눅스커널버전 확인
+# uname -a
+
+배포판확인(ubuntu 20.03 LTS)
+# cat /etc/issue
+
+컨테이너 탈출
+# control-P-Q
+$ 
+
+우분투 18.04
+$ docker run -it --name=ubuntu2 ubuntu:18.04
+
+# uname -a
+# cat /etc/issue
+
+control-P-Q
+
+CentOS
+$ docker run -it --name=centos1 centos
+
+# uname -a
+# cat /etc/centos-release
+
+control-P-Q
+
+MySQL 컨테이너 실행
+$ docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=bit --name=mysql1 mysql
+
+$ docker run -d -p 3307:3306 -e MYSQL_ROOT_PASSWORD=bit --name=mysql2 mysql:5.7
+
+mysql 컨테이너 접속
+$ docker exec -it mysql2 bash
+#
+
+mysql 접속
+# mysql -uroot -p
+mysql>
+
+show databases;
+use mysql;
+show tables;
+desc user\G
+show create table user;
+select * from user;
+
+show engines\G
+
+quit
+
+test database -> world(mysql windows) / 
+                 HR(oracle) 
+
+오픈소스기반 테스트DB
+launchpad.net/test-db
+
+https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2
+
+cf. Real MySQL(~5.5)/Real MariaDB(~5.6)
+
+# apt update
+# apt install nano
+# apt install wget
+# apt install bzip2
+
+launchpad.net/test-db 다운로드
+# wget https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2
+
+압축해제
+# bzip2 -d employees_db-full-1.0.6.tar.bz2
+# tar xvf employees_db-full-1.0.6.tar
+
+# cd employees_db
+# ls
+
+데이터 입력
+# mysql -uroot -p
+mysql> source employees.sql
+
+show databases;
+use employees;
+show tables;
+desc employees;
+show create table employees;
+select count(*) from employees;
+select * from employees limit 10;
+
+show indexes from employees;
+
+select * from employees where emp_no = 10001;
+
+select * from employees where first_name='Parto' and last_name='Bamford'; 
+
+create index sample_index on employees(first_name,last_name);
+
+show indexes from employees;
+
+select * from employees where first_name='Sumant' and last_name='Peac'; 
+
+show variables like '%commit%';
+set autocommit=0;
+// con.setAutoCommit(false)
+
+insert into employees values (100,'2000-1-1', 'Seokjae', 'Ha', 'M', '2021-3-1');
+
+select * from employees where emp_no=100;
+
+rollback;
+
+select * from employees where emp_no=100;
+
+select * from employees where emp_no=10001;
+
+CREATE TABLE `employees_new` (
+  `emp_no` int(11) NOT NULL,
+  `birth_date` date NOT NULL,
+  `first_name` varchar(14) NOT NULL,
+  `last_name` varchar(16) NOT NULL,
+  `gender` enum('M','F') NOT NULL,
+  `hire_date` date NOT NULL,
+  PRIMARY KEY (`emp_no`),
+  KEY `sample_index` (`first_name`,`last_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+DML(레코드 CRUD)  -> rollback 가능
+DDL(schema CRUD) -> rollback 안 됨 
+
+insert into employees values (100,'2000-1-1', 'Seokjae', 'Ha', 'M', '2021-3-1');
+select * from employees where emp_no=100;
+commit;
+rollback;
+select * from employees where emp_no=100;
+
+savepoint c1;
+-> rollback to c1;
+
+insert into employees values (200,'2000-1-1', 'Seokjae', 'Ha', 'M', '2021-3-1');
+
+savepoint c1;
+
+insert into employees values (300,'2000-1-1', 'Seokjae', 'Ha', 'M', '2021-3-1');
+
+rollback to c1;
+
+select * from employees where emp_no=100;
+select * from employees where emp_no=200;
+select * from employees where emp_no=300;
+
+show variables like '%isolation%';
+set tx_isolation='READ-COMMITTED';
+
+SQL injection 처리가 내장(PreparedStatment)
+
+ID/PASSWORD
+' or 1=1
+
+
+
+
+
+
+
+
+
+
+
+
+

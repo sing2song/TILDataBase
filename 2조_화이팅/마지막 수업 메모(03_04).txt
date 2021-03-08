@@ -1,0 +1,48 @@
+=============================================
+(17:10~)
+
+[JSON 파일 다운 및 import]
+https://m.blog.naver.com/PostView.nhn?blogId=korn123&logNo=220864724172&proxyReferer=https:%2F%2Fwww.google.com%2F
+
+mongo에서 quit()
+  # apt update
+  # apt install nano
+  # apt install wget
+  # wget https://raw.githubusercontent.com/mongodb/docs-assets/primer-dataset/primer-dataset.json
+
+=> 파일 다운로드가 끝났다면  # nano primer-dataset.json 명령어를 통해 파일 내용 확인 가능
+
+$date => 1980.1.1  이후로 1초에 1000씩 증가하는 값 (long 타입)
+
+[mongoDB에 import]
+primer-dataset.json이 있는 디렉토리에서 실행!
+# /usr/bin/mongoimport --db test --collection restaurants --drop --file primer-dataset.json
+# mongo			// mongo로 접속
+
+[실습 시작]
+1. show dbs
+2. use test
+3. show collections			// 테이블의 리스트 조회(restaurant 확인)
+4. db.restaurants.count()	// 컬렉션안의 레코드 전체 개수 = 25359
+
+// 이름이 null이 아닌 레코드 조회, 이름에 대해 오름차순으로 정렬
+5. db.restaurants.find({name:{"$exists":true, $ne:""}}).sort({name:1})
+
+// 이름이 없는 가게 카운트 조회, 이름에 대해 오름차순으로 정렬
+6. db.restaurants.find({name:{"$exists":true, $eq:""}}).sort({name:1}).count()
+
+// bagel 가게 리스트 중에 오름차순으로 정렬, /문자열/ => 와일드카드와 역할 비슷하다.
+7. db.restaurants.find({cuisine:/Bagels/}).sort({name:1})
+
+// 중복된 값 제외하고 조회
+8. db.restaurants.distinct("borough")
+
+// Bronx에 있는 레스토랑 개수 조회
+9. db.restaurants.find({borough:"Bronx"}).count()
+
+// zipcode와 address로 조회
+10. db.restaurants.find({"address.zipcode":"11224", "address.building":"2780"})
+	=> $elemMatch(구 버전 방식) 없이 'address.'으로 사용함(이게 더 편하다) 
+
+// 평가가 'A'인 가게 조회
+11. db.restaurants.find({"grades.grade":"A"})

@@ -1,0 +1,9 @@
+docker설치 -> 리부팅 -> wsl2(설치필요) -> 리부팅
+
+windows subsystem for linux(ubuntu bash, macos zsh)
+윈도우OS 점유 95-97%
+개발자는 윈도우개발 점유율이 엄청 낮아졌슴
+
+Hyper-V기반 WSL2
+
+Docker is running

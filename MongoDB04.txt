@@ -1,0 +1,345 @@
+mongo docker image
+
+$ docker exec -it mongodb1 bash
+$ docker start mongodb1 
+$ docker ps -a
+
+hub.docker.com
+
+Linux - Redhat(RHEL/centos/fedora)
+        Debian(+ubuntu)
+
+apt(ubuntu/debian) vs. yum
+
+java(oak)
+javascript(livescript/netscape)/jscript(IE) -> Flash(FLEX)
+  -파편화
+
+jquery 
+
+웹표준을 지켜라
+  ECMAscript(표준 자바스크립트:ES9)
+
+Standalone javascript(Node.js) - 애플리케이션/서버 
+  런타임은? v8 엔진
+
+chromium 
+  blink(HTML엔진)/v8(Javascript엔진) cf. webkit(애플)
+ 
+Java IDE
+  Eclipse(IBM) / Netbeans(Sun/Oracle) / Intelli J(JetBrains)
+
+Android - Eclipse / Android Studio 
+ OpenJava / Kotlin(JetBrains)
+
+WSL2 / VSCode(Editor) 
+
+cf. JRE(런타임+jvm)/JDK(compiler+런터임+jvm)
+
+M/M(man/month) - 공수
+ 특급/고급/중급/초급
+
+왜 자바일까?
+
+행정전산망(87) - 전자정부
+ksc5601(완성형)-1987
+
+java - linux(docker)
+
+$ docker run -it --name=openjava1 ubuntu
+# apt update
+# apt install nano
+# apt install openjdk-11-jdk
+
+환경변수(Environment Variable)
+- 윈도우 / 리눅스 공통
+  cf. registry(레지스트리)
+
+- 윈도우 탐색기 - 내 PC - 마우스 오른쪽 버튼 - 속성 - 고급시스템설정 - 환경변수 클릭
+
+- 프로세스(Process) 마다 별도의 환경변수영역을 가짐
+- 부모프로세스의 환경변수를 자식프로세스가 복사
+   A(process) -> CreateProcess/Fork(실행) -> B
+
+export SAMPLE=test
+  변수이름은 대문자
+  a=b에 빈 칸이 있으면 안 됨
+     export SAMPLE = test(x)
+
+echo $SAMPLE / env
+
+set SAMPLE=test(win)
+echo %SAMPLE%(win)
+set(win)
+
+$ docker run -it --name=ubuntu_new1 ubuntu
+# export SAMPLE=test
+# echo $SAMPLE
+# env
+
+cmd1 -> SAMPLE(o)/SAMPLE2(x) -> 
+cmd2 -> SAMPLE(o-상속)/SAMPLE2(o)
+
+자바 환경변수 
+JAVA_HOME(자바 설치위치)  
+   cf. x86-64 = amd64
+CLASSPATH(.class파일)
+   $JAVA_HOME/lib/*(*.jar)
+PATH  (javac/java)
+   $JAVA_HOME/bin
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=$JAVA_HOME/lib/*:.
+
+echo $JAVA_HOME
+echo $CLASSPATH
+echo $PATH
+
+.bashrc / .profile -> 계속 환경변수 남아있다 ...
+
+$ nano Sample.java
+
+class Sample { 
+   public static void main(String[] args) {
+        System.out.println("Hello, Java !!!");
+   }
+}
+
+control-O(write) / control-X(exit)
+
+$ cat Sample.java
+
+JDBC 드라이버 설치
+
+# apt install libmysql-java
+  # apt install libmariadb-java
+
+# find / -name *.jar
+
+/usr/share/java/mariadb-java-client.jar
+
+# export CLASSPATH=$CLASSPATH:/usr/share/java/mariadb-java-client.jar
+  cf. JSP에서는 tomcat(CATALINA_HOME)의 lib 폴더에 직접 복사
+
+# echo $CLASSPATH
+
+JavaDB.java로 저장(public 클래스는 파일명과 클래스명이 동일해야 함)
+
+import java.sql.*;
+
+class JavaDB {   
+    public static void main( String[] args ) {  
+        Connection conn = null ;  
+        Statement stmt = null;  
+  
+        try  
+        {  
+            Class.forName( "com.mysql.jdbc.Driver" ).newInstance();  
+        } catch( ClassNotFoundException e ){  
+            System.out.println( "드라이버 연결 에러." ) ;  
+        } catch(Exception etc) {  
+                System.out.println(etc.getMessage());  
+        } 
+ 
+        try {  
+            String url = "jdbc:mysql://172.17.0.3:3307/employees";  
+            String userId = "root";  
+            String userPass = "bit" ;  
+  
+            conn = DriverManager.getConnection(url, userId, userPass);  
+
+	    conn.setAutoCommit(false);
+
+            stmt = conn.createStatement();  
+      
+            ResultSet rs = null;  
+  
+            if (stmt.execute("select first_name, last_name from employees wherer emp_no = 10001;")) {  
+            rs = stmt.getResultSet();  
+            }
+  
+            while (rs.next()) {  
+		System.out.println(rs.getString("first_name")+" | "+ rs.getString("first_name"));
+            }
+            stmt.close();  
+            conn.setAutoCommit(true);
+            conn.close();  
+        catch( SQLException e )  
+        {  
+            System.out.println( "SQLException : " + e.getMessage() ) ;  
+        }  
+    }  
+}  
+
+K&R(커니건 & 리치)
+  if {  ...
+  }
+
+allman
+  if 
+  { ...
+  }
+
+Java Reflection(리플렉션/inspection) - 고급기능
+  실제 클래스명 무슨 의미?
+    Class/Object/Method/Constructor/Modifier
+
+  java.lang.Object(최상위)
+  무슨 기능이 있나-> Reflection이 있슴
+
+자바(open java) CLI -> JDBC -> MySQL
+  transaction / preparedStatement 
+
+자바(open java) -> mongo(docker)
+
+NCS 저자(빅데이터처리/클라우드/.../...)
+
+객체생성 -> 1. new A()   2. .newInstance()
+
+loosely coupled / tightly coupled 
+
+도커 컨테이너 IP 확인
+$ docker inspect mysql2 | grep IPAddress
+
+IPAddress 172.17.0.3
+
+
+conn.setAutoCommit(false);
+...
+try { SQL 트랜잭션 전체코드 
+    conn.commit();
+} catch(SQLexception e) {
+    conn.rollback();
+} finally {
+  conn.setAutoCommit(true);
+  stmt.close();  
+  conn.close(); 
+}
+...
+
+완성된 SW는 없슴(요구조건이 계속 변함/업데이트)
+ -> "제발" 쓰는 사람을 생각하라
+
+Docker - virtual box / hyper-v
+         WSL2
+
+cf. deprecated 
+
+(sudo) apt update 
+(sudo) apt install xxx
+
+$ docker exec -it mariadb1 bash
+# apt update
+# apt install nano
+# nano /etc/mysql/my.cnf
+
+#port:3306 를 찾아서 # 지우고 포트를 3308로 변경
+
+control-O/control-X
+
+control-P-Q
+
+$ docker stop mariadb1
+$ docker start mariadb1
+
+$ docker exec -it openjava1 bash
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=$JAVA_HOME/lib/*:.
+export CLASSPATH=$CLASSPATH:/usr/share/java/mariadb-java-client.jar
+
+
+환경변수 지정후
+# javac DBMS.java
+# java JavaDB
+
+$ docker ps -a
+
+https://docs.mongodb.com/drivers/java/
+
+mongodb driver
+https://mongodb.github.io/mongo-java-driver/
+
+# apt install wget
+# apt install unzip
+
+# wget https://dbschema.com/jdbc-drivers/MongoDbJdbcDriver.zip
+
+# mkdir MongoDrv
+# cd MongoDrv
+# unzip ../MongoDbJdbcDriver.zip
+ 
+# export CLASSPATH=$CLASSPATH:/MongoDrv/*
+
+https://twinw.tistory.com/207
+
+# nano MongoTest.java
+
+import java.util.List;
+import java.util.Set;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
+   
+class Main {
+    public static void main(String args[]){
+        String MongoDB_IP = "127.0.0.1";
+        int MongoDB_PORT = 27017;
+        String DB_NAME = "testDB";
+ 
+        //Connect to MongoDB
+        MongoClient  mongoClient = new MongoClient(new ServerAddress(MongoDB_IP, MongoDB_PORT));
+     
+        //View Database List
+        List<String> databases = mongoClient.getDatabaseNames();
+    
+        System.out.println("=====Database List===== ");
+        int num =1 ;
+        for (String dbName : databases) {
+            System.out.println( num  + ". " + dbName);
+            num++;
+        }
+      
+        System.out.println();
+     
+        //Connect Database and Show Collection List in Database
+        DB db = mongoClient.getDB(DB_NAME);
+        Set<String> collections = db.getCollectionNames();
+    
+        System.out.println("Database : " + DB_NAME);
+        for (String colName : collections) {
+            System.out.println(" + Collection: " + colName);
+        }
+    }
+}
+
+
+import org.bson.Document;
+
+# jar xvf gson-2.8.6.jar
+
+import ocom.google.gson.JsonArray
+
+col.find(and(lt("price", 50000), gt("price", 20000)));
+
+postfix/prefix
+2 3 +
++ 2 3 
+
+2+3 => infix  
++(2,3)
+
+MySQL(read) <- copy(replication) <- MongoDB(write)
+
+Hyrid: RDBMS+NoSQL
+
+HTML5 = HTML5/CSS3 + Javascript 
+
+Dynamic(CGI/JSP/Servlet) vs. Static(HTML/CSS3)
+
+Spring IoC/DI(Inversion of Control/Dependency Injection)
+  스프링 3각형
+cf. DI -> Angular
+
